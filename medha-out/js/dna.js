@@ -1,184 +1,116 @@
+// ─── AdmitIQ 7-Pattern DNA Diagnostic Engine ────────────────────
 const DNA = {
 
-  // Group behavior data into 4 categories
-  buildGroups(payload) {
-    const groups = {
-      slow: [],      // time > 6s
-      confused: [],  // switched 2+ times
-      master: [],    // correct + fast + minimal switching
-      danger: []     // wrong + fast
-    };
+  meta: {
+    1: { 
+      name: 'Slow + Correct', 
+      icon: '⏱️', 
+      badge: 'Memory Fade', 
+      color: '#6889FF', 
+      desc: 'সঠিক উত্তর দিয়েছেন কিন্তু সময় লেগেছে (>৬ সে.)। পরীক্ষার চাপে ভুলে যাওয়ার ঝুঁকি রয়েছে।' 
+    },
+    2: { 
+      name: 'Slow + Wrong', 
+      icon: '🐢', 
+      badge: 'Concept Gap', 
+      color: '#FFA053', 
+      desc: 'অনেক সময় নিয়েও ভুল উত্তর দিয়েছেন। তাত্ত্বিক ধারণাটি গোড়া থেকেই অস্পষ্ট।' 
+    },
+    3: { 
+      name: 'Switched + Correct', 
+      icon: '🔀', 
+      badge: 'Ambiguity Hesitation', 
+      color: '#A06BFF', 
+      desc: 'অপশন একাধিকবার পরিবর্তন করে সঠিক উত্তর দিয়েছেন। নির্দিষ্ট দুটি অপশনের মধ্যে স্পষ্ট পার্থক্যের অভাব।' 
+    },
+    4: { 
+      name: 'Switched + Wrong', 
+      icon: '🕸️', 
+      badge: 'Distractor Trap', 
+      color: '#FF5E85', 
+      desc: 'বারবার অপশন পরিবর্তন করে ফাঁদে পা দিয়েছেন। বিভ্রান্তিকর অপশনের শিকার হয়েছেন।' 
+    },
+    5: { 
+      name: 'Fast + Wrong', 
+      icon: '⚠️', 
+      badge: 'Confidently Wrong (Danger)', 
+      color: '#FF3366', 
+      desc: 'খুব দ্রুত আত্মবিশ্বাসের সাথে ভুল উত্তর দিয়েছেন! নেগেটিভ মার্কিংয়ের (-০.২৫) মারাত্মক কারণ।' 
+    },
+    6: { 
+      name: 'Skip & Return', 
+      icon: '⏳', 
+      badge: 'Avoidance / Last-Minute', 
+      color: '#E4A020', 
+      desc: 'প্রশ্নটি প্রথমে এড়িয়ে গিয়ে শেষে এসে উত্তর দিয়েছেন। মূল পরীক্ষায় এটি আতঙ্কের সৃষ্টি করতে পারে।' 
+    },
+    7: { 
+      name: 'Unattempted', 
+      icon: '⭕', 
+      badge: 'Uncharted Territory', 
+      color: '#888899', 
+      desc: 'প্রশ্নটি উত্তর দেওয়া হয়নি বা সময় শেষ হয়ে গিয়েছিল। অধ্যায়টি আবার রিভিশন দেওয়া দরকার।' 
+    },
+    0: { 
+      name: 'Mastered', 
+      icon: '⚡', 
+      badge: 'Mastered Recall', 
+      color: '#22C97A', 
+      desc: 'দ্রুত এবং শতভাগ আত্মবিশ্বাসের সাথে সঠিক উত্তর দিয়েছেন। কনসেপ্ট পুরোপুরি আয়ত্তে!' 
+    }
+  },
 
-    payload.forEach(item => {
-      const fast = item.timeTaken <= 6;
-      const switched = item.switchCount >= 1; // ANY switching = confused
-      const correct = item.isCorrect;
-
-      // PRIORITY: confused is always checked first — switching overrides everything
-      if (switched) {
-        groups.confused.push(item);
-      } else if (fast && !correct) {
-        // fast + wrong + no switching = danger (confidently wrong)
-        groups.danger.push(item);
-      } else if (fast && correct) {
-        // fast + correct + no switching = mastered
-        groups.master.push(item);
-      } else {
-        // slow (>6s) + no switching = slow
-        groups.slow.push(item);
-      }
+  buildGroups(telemetryItems) {
+    const groups = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 0: [] };
+    telemetryItems.forEach(item => {
+      const p = item.patternType !== undefined ? item.patternType : (item.pattern_type || 0);
+      if (groups[p]) groups[p].push(item);
     });
-
     return groups;
   },
 
-  // Render the DNA report into #dnaGroups
-  render(groups) {
-    const container = document.getElementById('dnaGroups');
-    container.innerHTML = '';
+  renderSummary(containerId, telemetryItems) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
-    const groupDefs = [
-      {
-        key: 'slow',
-        groupClass: 'group-slow',
-        tag: 'tag-slow',
-        label: 'ধীর গতি',
-        tagText: 'Group 1 — Slow',
-        icon: '⏱',
-        emptyMsg: 'কোনো ধীর প্রশ্ন নেই — গতি ভালো!'
-      },
-      {
-        key: 'confused',
-        groupClass: 'group-confused',
-        tag: 'tag-confused',
-        label: 'বিভ্রান্ত',
-        tagText: 'Group 2 — Confused',
-        icon: '🔀',
-        emptyMsg: 'কোনো বিভ্রান্তি নেই — সিদ্ধান্ত দৃঢ় ছিল!'
-      },
-      {
-        key: 'master',
-        groupClass: 'group-master',
-        tag: 'tag-master',
-        label: 'আয়ত্ত',
-        tagText: 'Group 3 — Mastered',
-        icon: '✦',
-        emptyMsg: 'এখনো কোনো আয়ত্ত প্রশ্ন নেই।'
-      },
-      {
-        key: 'danger',
-        groupClass: 'group-danger',
-        tag: 'tag-danger',
-        label: 'আত্মবিশ্বাসী ভুল',
-        tagText: 'Group 4 — Danger',
-        icon: '⚠',
-        emptyMsg: 'কোনো আত্মবিশ্বাসী ভুল নেই — চমৎকার!'
-      }
-    ];
+    const groups = this.buildGroups(telemetryItems);
+    const total = telemetryItems.length || 1;
 
-    groupDefs.forEach(def => {
-      const items = groups[def.key];
-      const section = document.createElement('div');
-      section.className = 'dna-group ' + def.groupClass;
+    // Display prioritized patterns
+    const order = [5, 4, 3, 6, 2, 1, 7, 0];
+    const rows = order.map(pId => {
+      const info = DNA.meta[pId];
+      const items = groups[pId] || [];
+      const pct = Math.round((items.length / total) * 100);
 
-      const header = `
-        <div class="dna-group-header">
-          <div class="dna-group-icon">${def.icon}</div>
-          <div class="dna-group-meta">
-            <span class="dna-group-tag ${def.tag}">${def.tagText}</span>
-            <span class="dna-group-label">${def.label}</span>
+      if (items.length === 0) return '';
+
+      return `
+        <div class="pattern-row-item" style="border-left: 4px solid ${info.color};">
+          <div class="pri-left">
+            <span class="pri-icon">${info.icon}</span>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="pri-name">${info.name}</span>
+                <span class="pri-badge" style="color:${info.color}; border:1px solid ${info.color}33;">${info.badge}</span>
+              </div>
+              <p style="font-family:var(--font-bangla); font-size:0.86rem; color:var(--text-muted); margin-top:3px;">
+                ${info.desc}
+              </p>
+            </div>
           </div>
-          <span class="dna-group-count">${items.length}টি প্রশ্ন</span>
-        </div>`;
+          <div style="text-align:right;">
+            <span class="pri-count">${items.length} MCQs</span>
+            <span style="display:block; font-size:0.75rem; color:var(--text-dim);">${pct}%</span>
+          </div>
+        </div>
+      `;
+    }).filter(Boolean).join('');
 
-      if (items.length === 0) {
-        section.innerHTML = header + `<div class="no-group">${def.emptyMsg}</div>`;
-      } else {
-        const cards = items.map(item => DNA.buildCard(item)).join('');
-        section.innerHTML = header + `<div class="dna-cards-wrap">${cards}</div>`;
-      }
-
-      container.appendChild(section);
-    });
-  },
-
-  buildInsight(item) {
-    const t = item.timeTaken;
-    const switched = item.switchCount >= 1;
-    const correct = item.isCorrect;
-    const fast = t <= 6;
-
-    if (switched) {
-      // confused group
-      if (correct) {
-        return { cls: 'insight-confused', text: `🔀 সঠিক শেষ হয়েছে — কিন্তু ${item.clickSequence.join('→')} পথ দেখাচ্ছে ধারণায় বিভ্রান্তি ছিল।` };
-      } else {
-        return { cls: 'insight-confused', text: `🔀 ভুল এবং দ্বিধাগ্রস্ত — একাধিকবার পরিবর্তন করেও সঠিক উত্তর খুঁজে পাওনি।` };
-      }
-    } else if (fast && !correct) {
-      // danger group
-      return { cls: 'insight-danger', text: `⚠ ভুল এবং দ্রুত — কোনো দ্বিধা ছাড়াই ভুল বেছেছ। আত্মবিশ্বাসী ভুলই সবচেয়ে বিপজ্জনক।` };
-    } else if (fast && correct) {
-      // master group
-      return { cls: 'insight-master', text: `✦ আয়ত্ত — দ্রুত, সঠিক, কোনো দ্বিধা নেই। এই ধারণাটি তোমার পুরোপুরি জানা।` };
-    } else {
-      // slow group
-      if (correct) {
-        return { cls: 'insight-slow', text: `⏱ সঠিক — কিন্তু ${t} সেকেন্ড লেগেছে। এই গতিতে পরীক্ষায় সমস্যা হতে পারে।` };
-      } else {
-        return { cls: 'insight-slow', text: `⏱ ভুল এবং ধীর — ${t} সেকেন্ড নিয়েও সঠিক উত্তর আসেনি। এই বিষয়টি আরও পড়া দরকার।` };
-      }
-    }
-  },
-
-  buildCard(item) {
-    const letters = ['A', 'B', 'C', 'D'];
-    const opts = item.options.map((opt, i) => {
-      let cls = 'dna-opt';
-      let icon = '';
-      if (i === item.correctAnswerIndex) {
-        cls += ' correct';
-        icon = '<span class="d-icon">✓</span>';
-      } else if (i === item.finalAnswerIndex && !item.isCorrect) {
-        cls += ' wrong';
-        icon = '<span class="d-icon">✗</span>';
-      }
-      return `<div class="${cls}"><span class="d-letter">${letters[i]}</span>${opt}${icon}</div>`;
-    }).join('');
-
-    // Build click path
-    let clickPathHTML = '';
-    if (item.clickSequence && item.clickSequence.length > 0) {
-      const nodes = item.clickSequence.map((letter, idx) => {
-        const isLast = idx === item.clickSequence.length - 1;
-        let cls = 'cp-node';
-        if (isLast) cls += item.isCorrect ? ' final-right' : ' final-wrong';
-        const arrow = idx < item.clickSequence.length - 1 ? '<span class="cp-arrow">→</span>' : '';
-        return `<span class="${cls}">${letter}</span>${arrow}`;
-      }).join('');
-      clickPathHTML = `<div class="click-path"><span class="cp-label">Click path:</span>${nodes}</div>`;
-    }
-
-    // Build insight line
-    const insight = DNA.buildInsight(item);
-    const insightHTML = `<div class="dna-insight ${insight.cls}">${insight.text}</div>`;
-
-    return `
-      <div class="dna-card">
-        <div class="dna-card-time">⏱ ${item.timeTaken}s</div>
-        <div class="dna-qtext">${item.questionText}</div>
-        <div class="dna-opts">${opts}</div>
-        ${clickPathHTML}
-        ${insightHTML}
-      </div>`;
-  },
-
-  // Returns only groups needed for AI (excludes master)
-  getAIInput(groups) {
-    return {
-      slow: groups.slow,
-      confused: groups.confused,
-      danger: groups.danger
-    };
+    container.innerHTML = rows || `
+      <div style="color:var(--text-muted); padding:16px; text-align:center;">
+        No specific behavioral hesitation detected. Excellent performance!
+      </div>
+    `;
   }
 };

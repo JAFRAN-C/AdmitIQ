@@ -1,411 +1,409 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AdmitIQ — Behavior Intelligence Exam</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdmitIQ — Cognitive Behavioral Exam Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar" id="navbar">
-  <div class="nav-logo">AdmitIQ<span>.</span></div>
-  <div class="nav-tabs" id="navTabs" style="display:none">
-    <button class="nav-tab active" data-screen="result">Result</button>
-    <button class="nav-tab" data-screen="dna">DNA Report</button>
-    <button class="nav-tab" data-screen="notes">Study Notes</button>
-  </div>
-  <div class="nav-right" id="navRight"></div>
-</nav>
-
-<!-- SCREEN: LANDING -->
-<div class="screen active" id="screen-landing">
-  <div class="hero-section">
-
-    <!-- LEFT: TEXT + CTA -->
-    <div class="hero-left">
-      <div class="hero-badge">Behavior Intelligence · Biology</div>
-      <h1 class="hero-title">Exams that<br>understand<br><span class="hero-accent">how you think</span></h1>
-      <p class="hero-sub">AdmitIQ silently tracks every click, hesitation, and switch — then turns your behavior into personalized AI study notes.</p>
-      <div class="hero-btns">
-        <button class="btn-start" id="btnStart">Start Exam →</button>
-        <button class="btn-demo" id="btnDemo">See Demo</button>
-      </div>
+  <!-- TOP NAVIGATION -->
+  <nav class="app-navbar" id="navbar">
+    <div class="brand-wrap" onclick="App.showScreen('dashboard')">
+      <span class="brand-logo-text">AdmitIQ<span class="brand-dot">.</span></span>
+      <span class="brand-sub-badge">Biology 🧬</span>
     </div>
 
-    <!-- RIGHT: ANIMATED VISUALIZATION -->
-    <div class="hero-right">
-      <div class="hero-anim-wrap">
+    <div class="nav-links-row" id="navTabs">
+      <button class="nav-tab-btn active" data-screen="dashboard">Dashboard</button>
+      <button class="nav-tab-btn" data-screen="chapters" onclick="App.openChapterSelector()">Chapters & Syllabus</button>
+      <button class="nav-tab-btn" data-screen="notes">Living Study Notes</button>
+      <button class="nav-tab-btn" data-screen="dna">Cognitive DNA</button>
+    </div>
 
-        <!-- Floating stat cards -->
-        <div class="anim-card anim-card-1">
-          <div class="anim-card-icon">⚡</div>
-          <div class="anim-card-text">
-            <span class="anim-card-val">18s</span>
-            <span class="anim-card-label">Avg response time</span>
+    <div class="user-profile-badge">
+      <div class="upb-avatar">S</div>
+      <div class="upb-name">
+        <span class="user-display-name">Sreya</span>
+        <span style="color:var(--text-dim); font-size:0.75rem; margin-left:4px;">(MAT 🩺)</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="main-content">
+
+    <!-- ══════════════════════════════════════════════════════════
+         SCREEN 1: DASHBOARD
+         ══════════════════════════════════════════════════════════ -->
+    <section class="screen-view active" id="screen-dashboard">
+      <!-- Hero Card -->
+      <div class="dash-hero-card">
+        <div class="dhc-left">
+          <div class="dhc-tag">Medical Admission Intelligence · HSC Biology</div>
+          <h1 class="dhc-title">Analyze How You Think, Not Just What You Got Wrong</h1>
+          <p class="dhc-sub">
+            AdmitIQ tracks hesitation (&gt;6s), option switches, and panic skips to uncover why you err in Medical Admission tests. It builds living, adaptive study notes tailored to your unique cognitive patterns.
+          </p>
+          <div class="dhc-actions">
+            <button class="btn-primary" onclick="App.startStandardExam(10)">
+              Start 10-Question Diagnostic Exam →
+            </button>
+            <button class="btn-secondary" onclick="App.openChapterSelector()">
+              Browse Chapters by Syllabus
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Stat Metrics -->
+      <div class="stats-cards-row">
+        <div class="stat-card-item">
+          <div class="sci-lbl">Cognitive Threshold</div>
+          <div class="sci-val">6.0s</div>
+          <div class="sci-sub">Latency boundary separating firm recall from memory fade</div>
+        </div>
+        <div class="stat-card-item">
+          <div class="sci-lbl">Behavioral Mapping</div>
+          <div class="sci-val">7 Patterns</div>
+          <div class="sci-sub">Detects hesitation, distractor traps, panic skips & confident errors</div>
+        </div>
+        <div class="stat-card-item">
+          <div class="sci-lbl">Living Study Notes</div>
+          <div class="sci-val">Adaptive Loop</div>
+          <div class="sci-sub">Notes evolve and level up automatically with each exam you take</div>
+        </div>
+      </div>
+
+      <!-- Syllabus Overview Section -->
+      <div class="syllabus-overview-card">
+        <div class="soc-header">
+          <h2 class="soc-title">HSC Biology Syllabus (18 Chapters)</h2>
+          <span style="font-size:0.85rem; color:var(--text-muted);">Medical Admission Test Standard</span>
+        </div>
+
+        <div class="paper-cards-grid">
+          <!-- Paper 1 Botany -->
+          <div class="paper-box" onclick="App.openChapterSelector('1st_paper')">
+            <div class="pb-header">
+              <span class="pb-title">Paper 1: Botany (১ম পত্র)</span>
+              <span class="pb-count">9 Chapters</span>
+            </div>
+            <p class="pb-desc">
+              Cell Structure, Genetics, Photosynthesis, Respiration, Plant Tissue, and Biotechnology.
+            </p>
+            <button class="btn-secondary" style="font-size:0.82rem; padding:8px 16px;">
+              Explore Botany Chapters →
+            </button>
+          </div>
+
+          <!-- Paper 2 Zoology -->
+          <div class="paper-box" onclick="App.openChapterSelector('2nd_paper')">
+            <div class="pb-header">
+              <span class="pb-title">Paper 2: Zoology (২য় পত্র)</span>
+              <span class="pb-count">9 Chapters</span>
+            </div>
+            <p class="pb-desc">
+              Animal Diversity, Human Digestion, Blood & Circulation, Genetics & Evolution, and Immunity.
+            </p>
+            <button class="btn-secondary" style="font-size:0.82rem; padding:8px 16px;">
+              Explore Zoology Chapters →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SCREEN 2: ACTIVE MCQ EXAM RUNNER (CLEAN & INTUITIVE)
+         ══════════════════════════════════════════════════════════ -->
+    <section class="screen-view" id="screen-exam">
+      <div class="exam-layout-card">
+
+        <!-- Exam Header -->
+        <div class="exam-header-bar">
+          <div class="exam-meta-block">
+            <span class="exam-chapter-name" id="examActiveTitle">Biology Comprehensive Exam</span>
+            <div class="exam-q-counter">
+              Question <span id="examCurrentNum">01</span> of <span id="examTotalCount">10</span>
+            </div>
+          </div>
+          <div class="exam-timer-pill" id="examTimerPill">
+            <span>⏱️</span>
+            <span id="examTimerDisplay">00:30</span>
           </div>
         </div>
 
-        <div class="anim-card anim-card-2">
-          <div class="anim-card-icon">🧬</div>
-          <div class="anim-card-text">
-            <span class="anim-card-val">DNA</span>
-            <span class="anim-card-label">Behavior mapped</span>
+        <!-- Question Bubble Navigation Strip (1..10) -->
+        <div class="question-bubbles-strip" id="examBubblesStrip"></div>
+
+        <!-- Question Stem Box -->
+        <div class="question-display-box">
+          <span class="q-topic-tag" id="examTopicTag">General Biology</span>
+          <h2 class="q-main-text" id="examQuestionText">প্রশ্ন লোড হচ্ছে...</h2>
+        </div>
+
+        <!-- MCQ Options Stack (A, B, C, D) -->
+        <div class="mcq-options-stack" id="examOptionsStack"></div>
+
+        <!-- Exam Action Footer -->
+        <div class="exam-action-footer">
+          <button class="btn-secondary" id="btnPrevQuestion" onclick="App.prevQuestion()">
+            ← Previous
+          </button>
+
+          <button class="btn-skip-flag" id="btnSkipQuestion" onclick="App.skipCurrentQuestion()">
+            Skip / Review Later ⏩
+          </button>
+
+          <div style="display:flex; gap:10px;">
+            <button class="btn-primary" id="btnNextQuestion" onclick="App.nextQuestion()">
+              Next Question →
+            </button>
+            <button class="btn-primary" id="btnSubmitExam" style="display:none; background:var(--accent-green);" onclick="App.finishExam()">
+              Submit Exam ✓
+            </button>
           </div>
         </div>
 
-        <div class="anim-card anim-card-3">
-          <div class="anim-card-icon">✦</div>
-          <div class="anim-card-text">
-            <span class="anim-card-val">AI Notes</span>
-            <span class="anim-card-label">Generated instantly</span>
-          </div>
-        </div>
+      </div>
+    </section>
 
-        <!-- Central orb -->
-        <div class="anim-orb-wrap">
-          <div class="anim-orb-ring anim-ring-1"></div>
-          <div class="anim-orb-ring anim-ring-2"></div>
-          <div class="anim-orb-ring anim-ring-3"></div>
-          <div class="anim-orb">
-            <div class="anim-orb-inner">
-              <div class="anim-pulse-dot"></div>
-              <span class="anim-orb-label">AdmitIQ</span>
+    <!-- ══════════════════════════════════════════════════════════
+         SCREEN 3: EXAM RESULTS & 7-PATTERN REPORT
+         ══════════════════════════════════════════════════════════ -->
+    <section class="screen-view" id="screen-results">
+      <div class="result-card-container">
+
+        <!-- Score Overview -->
+        <div class="result-score-overview">
+          <div class="rso-score-box">
+            <h3 id="resScoreNum">8 / 10</h3>
+            <p>Diagnostic Exam Completed 🎉</p>
+          </div>
+          <div class="rso-metrics-grid">
+            <div class="rso-m-item">
+              <span class="rso-m-lbl">Accuracy</span>
+              <span class="rso-m-val" id="resAccuracyPercent">80%</span>
+            </div>
+            <div class="rso-m-item">
+              <span class="rso-m-lbl">Average Time</span>
+              <span class="rso-m-val" id="resAvgTimeTaken">4.8s</span>
+            </div>
+            <div class="rso-m-item">
+              <span class="rso-m-lbl">Total Questions</span>
+              <span class="rso-m-val" id="resTotalQNum">10</span>
             </div>
           </div>
         </div>
 
-        <!-- Behavior path lines -->
-        <svg class="anim-paths" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-          <path class="anim-path anim-path-a" d="M 60 120 Q 160 100 200 200" fill="none"/>
-          <path class="anim-path anim-path-b" d="M 340 130 Q 260 110 200 200" fill="none"/>
-          <path class="anim-path anim-path-c" d="M 80 300 Q 150 280 200 200" fill="none"/>
-          <path class="anim-path anim-path-d" d="M 330 290 Q 260 270 200 200" fill="none"/>
-          <!-- Traveling dots -->
-          <circle class="travel-dot dot-a" r="4" fill="#7c6fff">
-            <animateMotion dur="2.4s" repeatCount="indefinite" begin="0s">
-              <mpath href="#path-a-id"/>
-            </animateMotion>
-          </circle>
-          <circle class="travel-dot dot-b" r="4" fill="#22c97a">
-            <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.6s">
-              <mpath href="#path-b-id"/>
-            </animateMotion>
-          </circle>
-          <circle class="travel-dot dot-c" r="3.5" fill="#ff4f6a">
-            <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.2s">
-              <mpath href="#path-c-id"/>
-            </animateMotion>
-          </circle>
-
-          <!-- Hidden paths for animateMotion -->
-          <path id="path-a-id" d="M 60 120 Q 160 100 200 200" fill="none"/>
-          <path id="path-b-id" d="M 340 130 Q 260 110 200 200" fill="none"/>
-          <path id="path-c-id" d="M 80 300 Q 150 280 200 200" fill="none"/>
-        </svg>
-
-        <!-- Behavior tags floating around orb -->
-        <div class="anim-tag tag-slow">Slow</div>
-        <div class="anim-tag tag-confused">Confused</div>
-        <div class="anim-tag tag-danger">Danger</div>
-        <div class="anim-tag tag-master">Mastered</div>
-
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- SCREEN: DEMO -->
-<div class="screen" id="screen-demo">
-
-  <!-- Demo Navbar -->
-  <div class="demo-topnav">
-    <button class="demo-back-btn" id="btnDemoBack">← Back</button>
-    <span class="demo-topnav-title">AdmitIQ <span class="demo-topnav-badge">Demo Mode</span></span>
-    <span class="demo-topnav-hint">Click through to explore</span>
-  </div>
-
-  <div class="demo-fullscreen-wrap">
-    <div class="demo-widget" id="demoWidget">
-
-      <!-- DEMO: EXAM VIEW -->
-      <div class="demo-panel active" id="demo-exam">
-        <div class="demo-topbar">
-          <span class="demo-label">Live Exam</span>
-          <span class="demo-timer" id="demoTimer">30</span>
-        </div>
-        <div class="demo-question">ইউক্যারিওটিক কোষে কোন অঙ্গাণু ATP উৎপন্ন করে?</div>
-        <div class="demo-options" id="demoOptions">
-          <div class="demo-opt" data-i="0"><span class="demo-letter">A</span>নিউক্লিয়াস</div>
-          <div class="demo-opt" data-i="1"><span class="demo-letter">B</span>রাইবোজোম</div>
-          <div class="demo-opt" data-i="2"><span class="demo-letter">C</span>মাইটোকন্ড্রিয়া</div>
-          <div class="demo-opt" data-i="3"><span class="demo-letter">D</span>লাইসোজোম</div>
-        </div>
-        <div class="demo-cursor" id="demoCursor">●</div>
-        <button class="demo-see-result" id="demoSeeResult">ফলাফল দেখুন →</button>
-      </div>
-
-      <!-- DEMO: RESULT VIEW -->
-      <div class="demo-panel" id="demo-result">
-        <div class="demo-topbar">
-          <span class="demo-label">Result</span>
-          <span class="demo-score-badge">3 / 4</span>
-        </div>
-        <div class="demo-result-score">
-          <div class="demo-score-circle">
-            <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" fill="none" stroke="#1e1e2a" stroke-width="5"/><circle cx="40" cy="40" r="32" fill="none" stroke="#22c97a" stroke-width="5" stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="50" transform="rotate(-90 40 40)"/></svg>
-            <div class="demo-score-text"><span class="demo-score-n">3</span><span class="demo-score-d">/4</span></div>
-          </div>
-          <div class="demo-score-info">
-            <div class="demo-score-title">Good Effort</div>
-            <div class="demo-score-sub">Biology · 4 Questions</div>
+        <!-- Dominant Behavioral Diagnosis -->
+        <div class="dominant-pattern-box">
+          <div class="dpb-tag">Dominant Behavioral Diagnosis</div>
+          <div class="dpb-name" id="resDominantPatternName">⚠️ Confidently Wrong (Negative Marking Danger)</div>
+          <div class="dpb-desc" id="resDominantPatternDesc">
+            খুব দ্রুত আত্মবিশ্বাসের সাথে উত্তর দিয়েছেন কিন্তু ভুল হয়েছে। ভর্তি পরীক্ষার হলে নেগেটিভ মার্কিং এড়াতে এই প্যাটার্নের নোটটি পড়ুন।
           </div>
         </div>
-        <div class="demo-result-list">
-          <div class="demo-res-row correct"><span class="demo-res-dot"></span>Q1 — Mitochondria function <span class="demo-res-mark">✓</span></div>
-          <div class="demo-res-row correct"><span class="demo-res-dot"></span>Q2 — Photosynthesis <span class="demo-res-mark">✓</span></div>
-          <div class="demo-res-row wrong"><span class="demo-res-dot"></span>Q3 — Cell cycle phases <span class="demo-res-mark">✗</span></div>
-          <div class="demo-res-row correct"><span class="demo-res-dot"></span>Q4 — RNA types <span class="demo-res-mark">✓</span></div>
+
+        <!-- 7-Pattern Breakdown -->
+        <div class="patterns-table-wrap">
+          <h3 class="pt-title">7-Pattern Cognitive Breakdown</h3>
+          <div id="dnaBreakdownSlot"></div>
         </div>
-        <div class="demo-action-row">
-          <button class="demo-action-btn" id="demoBtnDNA">DNA Report</button>
-          <button class="demo-action-btn secondary" id="demoBtnNotes">Study Notes</button>
+
+        <!-- Actions -->
+        <div style="display:flex; gap:14px; margin-top:28px;">
+          <button class="btn-primary" onclick="App.generateNotesAfterExam()">
+            Generate AI Living Notes ✨
+          </button>
+          <button class="btn-secondary" onclick="App.openChapterSelector()">
+            Practice Another Chapter →
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SCREEN 4: COGNITIVE DNA MATRIX
+         ══════════════════════════════════════════════════════════ -->
+    <section class="screen-view" id="screen-dna">
+      <div class="soc-header" style="margin-bottom:20px;">
+        <div>
+          <h2 class="soc-title">Cognitive DNA Behavioral Matrix</h2>
+          <p style="color:var(--text-muted); font-size:0.92rem; margin-top:4px;">
+            How AdmitIQ maps your cognitive hesitation, option changes, and recall patterns:
+          </p>
         </div>
       </div>
 
-      <!-- DEMO: DNA VIEW -->
-      <div class="demo-panel" id="demo-dna">
-        <div class="demo-topbar">
-          <span class="demo-label">DNA Report</span>
-          <span class="demo-sub-label">Behavior Replay</span>
+      <div class="dna-matrix-grid">
+        <!-- Pattern 1 -->
+        <div class="dna-card-item" style="border-left: 4px solid #6889FF;">
+          <div class="dci-head">
+            <div class="dci-left"><span class="dci-icon">⏱️</span><span class="dci-name">1. Slow + Correct</span></div>
+            <span class="dci-badge" style="background:rgba(104,137,255,0.15); color:#6889FF;">Memory Fade</span>
+          </div>
+          <div class="dci-desc">সময় বেশি লেগেছে (&gt;৬ সে.) কিন্তু উত্তর সঠিক। স্মৃতি থেকে তথ্য উদ্ধারে বেগ পেতে হচ্ছে, যা পরীক্ষার চাপে ভুলে যাওয়ার ঝুঁকিপূর্ণ।</div>
+          <div class="dci-logic"><strong>Logic:</strong> Correct = True, Time &gt; 6s, Option Switches = 0</div>
         </div>
-        <div class="demo-dna-list">
 
-          <!-- GROUP 1: SLOW — correct answer, took > 6s, no switching -->
-          <div class="demo-dna-card slow">
-            <div class="demo-dna-tag slow-tag">Group 1 — Slow</div>
-            <div class="demo-dna-time">⏱ ১৮ সেকেন্ড</div>
-            <div class="demo-dna-q">কোন অঙ্গাণুকে কোষের 'পাওয়ারহাউস' বলা হয় কারণ এটি ATP উৎপন্ন করে?</div>
-            <div class="demo-dna-opts">
-              <div class="demo-dna-opt"><span class="demo-dna-letter">A</span>নিউক্লিয়াস</div>
-              <div class="demo-dna-opt"><span class="demo-dna-letter">B</span>রাইবোজোম</div>
-              <div class="demo-dna-opt"><span class="demo-dna-letter">C</span>গলজি বডি</div>
-              <div class="demo-dna-opt dna-correct"><span class="demo-dna-letter">D</span>মাইটোকন্ড্রিয়া <span class="dna-icon">✓</span></div>
-            </div>
-            <div class="demo-dna-path"><span class="dna-path-label">Click path:</span> <span class="cp-n fin-right">D</span></div>
-            <div class="demo-dna-insight slow-insight">⏱ সঠিক — কিন্তু ১৮ সেকেন্ড লেগেছে। এই গতিতে পরীক্ষায় সমস্যা হতে পারে।</div>
+        <!-- Pattern 2 -->
+        <div class="dna-card-item" style="border-left: 4px solid #FFA053;">
+          <div class="dci-head">
+            <div class="dci-left"><span class="dci-icon">🐢</span><span class="dci-name">2. Slow + Wrong</span></div>
+            <span class="dci-badge" style="background:rgba(255,160,83,0.15); color:#FFA053;">Concept Gap</span>
           </div>
-
-          <!-- GROUP 2: CONFUSED — switched multiple options (A→B→C), ended correct -->
-          <div class="demo-dna-card confused">
-            <div class="demo-dna-tag confused-tag">Group 2 — Confused</div>
-            <div class="demo-dna-time">⏱ ১২ সেকেন্ড</div>
-            <div class="demo-dna-q">উদ্ভিদ সূর্যালোককে রাসায়নিক শক্তিতে রূপান্তরিত করার প্রক্রিয়াকে কী বলে?</div>
-            <div class="demo-dna-opts">
-              <div class="demo-dna-opt"><span class="demo-dna-letter">A</span>কোষীয় শ্বসন</div>
-              <div class="demo-dna-opt"><span class="demo-dna-letter">B</span>প্রস্বেদন</div>
-              <div class="demo-dna-opt dna-correct"><span class="demo-dna-letter">C</span>সালোকসংশ্লেষণ <span class="dna-icon">✓</span></div>
-              <div class="demo-dna-opt"><span class="demo-dna-letter">D</span>গাঁজন</div>
-            </div>
-            <div class="demo-dna-path"><span class="dna-path-label">Click path:</span> <span class="cp-n">A</span> → <span class="cp-n">B</span> → <span class="cp-n fin-right">C</span></div>
-            <div class="demo-dna-insight confused-insight">🔀 সঠিক শেষ হয়েছে — কিন্তু A→B→C পথ দেখাচ্ছে ধারণায় বিভ্রান্তি ছিল।</div>
-          </div>
-
-          <!-- GROUP 4: DANGER — wrong + fast, no switching (confidently wrong) -->
-          <div class="demo-dna-card danger">
-            <div class="demo-dna-tag danger-tag">Group 4 — Danger</div>
-            <div class="demo-dna-time">⏱ ৩ সেকেন্ড</div>
-            <div class="demo-dna-q">কোষ চক্রের কোন দশায় DNA প্রতিলিপি তৈরি হয়?</div>
-            <div class="demo-dna-opts">
-              <div class="demo-dna-opt"><span class="demo-dna-letter">A</span>G₁ দশা</div>
-              <div class="demo-dna-opt dna-wrong"><span class="demo-dna-letter">B</span>G₂ দশা <span class="dna-icon">✗</span></div>
-              <div class="demo-dna-opt dna-correct"><span class="demo-dna-letter">C</span>S দশা <span class="dna-icon">✓</span></div>
-              <div class="demo-dna-opt"><span class="demo-dna-letter">D</span>M দশা</div>
-            </div>
-            <div class="demo-dna-path"><span class="dna-path-label">Click path:</span> <span class="cp-n fin-wrong">B</span></div>
-            <div class="demo-dna-insight danger-insight">⚠ ভুল এবং দ্রুত — কোনো দ্বিধা ছাড়াই ভুল বেছেছ। আত্মবিশ্বাসী ভুলই সবচেয়ে বিপজ্জনক।</div>
-          </div>
-
-          <!-- GROUP 3: MASTERED — correct + fast + no switching -->
-          <div class="demo-dna-card master">
-            <div class="demo-dna-tag master-tag">Group 3 — Mastered</div>
-            <div class="demo-dna-time">⏱ ৪ সেকেন্ড</div>
-            <div class="demo-dna-q">কোন অণু নিউক্লিয়াস থেকে রাইবোজোমে জিনগত তথ্য বহন করে?</div>
-            <div class="demo-dna-opts">
-              <div class="demo-dna-opt"><span class="demo-dna-letter">A</span>tRNA</div>
-              <div class="demo-dna-opt dna-correct"><span class="demo-dna-letter">B</span>mRNA <span class="dna-icon">✓</span></div>
-              <div class="demo-dna-opt"><span class="demo-dna-letter">C</span>rRNA</div>
-              <div class="demo-dna-opt"><span class="demo-dna-letter">D</span>snRNA</div>
-            </div>
-            <div class="demo-dna-path"><span class="dna-path-label">Click path:</span> <span class="cp-n fin-right">B</span></div>
-            <div class="demo-dna-insight master-insight">✦ আয়ত্ত — দ্রুত, সঠিক, কোনো দ্বিধা নেই। এই ধারণাটি তোমার পুরোপুরি জানা।</div>
-          </div>
-
+          <div class="dci-desc">অনেক সময় নিয়েও ভুল উত্তর। তাত্ত্বিক ভিত্তি দুর্বল হওয়ায় সঠিক সিদ্ধান্তে পৌঁছাতে পারেননি।</div>
+          <div class="dci-logic"><strong>Logic:</strong> Correct = False, Time &gt; 6s, Option Switches = 0</div>
         </div>
-        <div class="demo-action-row" style="margin-top:10px">
-          <button class="demo-action-btn" id="demoBtnNotes2">স্টাডি নোটস →</button>
+
+        <!-- Pattern 3 -->
+        <div class="dna-card-item" style="border-left: 4px solid #A06BFF;">
+          <div class="dci-head">
+            <div class="dci-left"><span class="dci-icon">🔀</span><span class="dci-name">3. Switched + Correct</span></div>
+            <span class="dci-badge" style="background:rgba(160,107,255,0.15); color:#A06BFF;">Ambiguity Hesitation</span>
+          </div>
+          <div class="dci-desc">অপশন একাধিকবার পরিবর্তন করে সঠিক উত্তর দিয়েছেন। নির্দিষ্ট দুটি অপশনের মাঝে সূক্ষ্ম পার্থক্য চিহ্নিত করতে দ্বিধা রয়েছে।</div>
+          <div class="dci-logic"><strong>Logic:</strong> Correct = True, Option Switches &ge; 1</div>
+        </div>
+
+        <!-- Pattern 4 -->
+        <div class="dna-card-item" style="border-left: 4px solid #FF5E85;">
+          <div class="dci-head">
+            <div class="dci-left"><span class="dci-icon">🕸️</span><span class="dci-name">4. Switched + Wrong</span></div>
+            <span class="dci-badge" style="background:rgba(255,94,133,0.15); color:#FF5E85;">Distractor Trap</span>
+          </div>
+          <div class="dci-desc">অপশন পরিবর্তন করতে গিয়ে প্রশ্নকর্তার বিভ্রান্তিকর ফাঁদে পা দিয়েছেন। অপশন দুটির বৈপরীত্য পরিষ্কার করা জরুরি।</div>
+          <div class="dci-logic"><strong>Logic:</strong> Correct = False, Option Switches &ge; 1</div>
+        </div>
+
+        <!-- Pattern 5 -->
+        <div class="dna-card-item" style="border-left: 4px solid #FF3366;">
+          <div class="dci-head">
+            <div class="dci-left"><span class="dci-icon">⚠️</span><span class="dci-name">5. Fast + Wrong</span></div>
+            <span class="dci-badge" style="background:rgba(255,51,102,0.15); color:#FF3366;">Confidently Wrong</span>
+          </div>
+          <div class="dci-desc">কোনো দ্বিধা ছাড়াই খুব দ্রুত ভুল উত্তর! এটি ভুল আত্মবিশ্বাস যা ভর্তি পরীক্ষায় মারাত্মক নেগেটিভ মার্কিং (-০.২৫) ঘটায়।</div>
+          <div class="dci-logic"><strong>Logic:</strong> Correct = False, Time &le; 6s, Option Switches = 0</div>
+        </div>
+
+        <!-- Pattern 6 -->
+        <div class="dna-card-item" style="border-left: 4px solid #E4A020;">
+          <div class="dci-head">
+            <div class="dci-left"><span class="dci-icon">⏳</span><span class="dci-name">6. Skip & Return</span></div>
+            <span class="dci-badge" style="background:rgba(228,160,32,0.15); color:#E4A020;">Avoidance Blank</span>
+          </div>
+          <div class="dci-desc">প্রশ্ন দেখে ভয় পেয়ে প্রথমে স্কিপ করে পরে উত্তর দিয়েছেন। তাৎক্ষণিক রিকল অক্ষমতার লক্ষণ, যা পরীক্ষার হলে আতঙ্ক বাড়ায়।</div>
+          <div class="dci-logic"><strong>Logic:</strong> Skipped = True, Answered At End = True</div>
+        </div>
+
+        <!-- Pattern 7 -->
+        <div class="dna-card-item" style="border-left: 4px solid #888899;">
+          <div class="dci-head">
+            <div class="dci-left"><span class="dci-icon">⭕</span><span class="dci-name">7. Unattempted</span></div>
+            <span class="dci-badge" style="background:rgba(136,136,153,0.15); color:#888899;">Uncharted Territory</span>
+          </div>
+          <div class="dci-desc">প্রশ্নটির উত্তর দেওয়া হয়নি বা এড়িয়ে যাওয়া হয়েছে। এই অধ্যায়টির মৌলিক কনসেপ্টগুলো আবার রিভিশন দেওয়া প্রয়োজন।</div>
+          <div class="dci-logic"><strong>Logic:</strong> Answer = None / Left Blank</div>
+        </div>
+
+        <!-- Pattern 0 -->
+        <div class="dna-card-item" style="border-left: 4px solid #22C97A;">
+          <div class="dci-head">
+            <div class="dci-left"><span class="dci-icon">⚡</span><span class="dci-name">0. Mastered</span></div>
+            <span class="dci-badge" style="background:rgba(34,201,122,0.15); color:#22C97A;">Mastered Recall</span>
+          </div>
+          <div class="dci-desc">৬ সেকেন্ডের মধ্যে কোনো দ্বিধা ছাড়া শতভাগ সঠিক উত্তর। ধারণাটি আপনার মস্তিষ্কে সম্পূর্ণ সুরক্ষিত!</div>
+          <div class="dci-logic"><strong>Logic:</strong> Correct = True, Time &le; 6s, Option Switches = 0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SCREEN 5: LIVING STUDY NOTES
+         ══════════════════════════════════════════════════════════ -->
+    <section class="screen-view" id="screen-notes">
+      <div class="soc-header" style="margin-bottom:24px;">
+        <div>
+          <h2 class="soc-title">Living Study Notes 🧬</h2>
+          <p style="color:var(--text-muted); font-size:0.92rem; margin-top:4px;">
+            Personalized notes generated from your answering patterns. Notes evolve and upgrade automatically as you retake tests.
+          </p>
         </div>
       </div>
 
-      <!-- DEMO: STUDY NOTES VIEW -->
-      <div class="demo-panel" id="demo-notes">
-        <div class="demo-topbar">
-          <span class="demo-label">Study Notes</span>
-          <span class="demo-sub-label">AI Generated</span>
-        </div>
-        <div class="demo-notes-list">
-          <div class="demo-note-card">
-            <div class="demo-note-badge slow-badge">Section 1 — Slow</div>
-            <div class="demo-note-topic">মাইটোকন্ড্রিয়া ও ATP উৎপাদন</div>
-            <div class="demo-note-row"><span class="demo-note-lbl">Explanation</span><span class="demo-note-val">মাইটোকন্ড্রিয়া হলো কোষের শক্তি কারখানা — এটি গ্লুকোজ ও অক্সিজেন ব্যবহার করে কোষীয় শ্বসনের মাধ্যমে ATP তৈরি করে।</span></div>
-            <div class="demo-note-row"><span class="demo-note-lbl">Memory trick</span><span class="demo-note-val"><b>মাইটো</b> = <b>শ</b>ক্তির কারখানা। মনে রাখো: "মাইটোকন্ড্রিয়া = ATP তৈরি করে"।</span></div>
-            <div class="demo-note-trap">ফাঁদ প্রশ্ন: "কোন অঙ্গাণু আলোক শক্তিকে ATP-তে রূপান্তর করে?" — ক্লোরোপ্লাস্টের সাথে গুলিয়ে ফেলো না।</div>
-          </div>
-          <div class="demo-note-card">
-            <div class="demo-note-badge confused-badge">Section 2 — Confused</div>
-            <div class="demo-note-topic">সালোকসংশ্লেষণ বনাম অনুরূপ প্রক্রিয়া</div>
-            <div class="demo-confusion-table">
-              <div class="dct-head">
-                <div class="dct-th correct-th">সালোকসংশ্লেষণ</div>
-                <div class="dct-th wrong-th">কোষীয় শ্বসন</div>
-                <div class="dct-th wrong-th">প্রস্বেদন</div>
-              </div>
-              <div class="dct-body">
-                <div class="dct-td correct-td">সূর্যালোক দিয়ে খাদ্য তৈরি করে</div>
-                <div class="dct-td wrong-td">খাদ্য থেকে শক্তি মুক্ত করে</div>
-                <div class="dct-td wrong-td">পাতা থেকে জলীয় বাষ্প বের করে</div>
-              </div>
-            </div>
-            <div class="demo-note-row"><span class="demo-note-lbl">Memory trick</span><span class="demo-note-val"><b>ফটো</b> = আলো, <b>সিন্থেসিস</b> = তৈরি। শুধু সালোকসংশ্লেষণই সূর্যালোক দিয়ে খাদ্য তৈরি করে।</span></div>
-            <div class="demo-note-trap">ফাঁদ প্রশ্ন: "কোন প্রক্রিয়া CO₂ ও জল ব্যবহার করে গ্লুকোজ তৈরি করে?"</div>
-          </div>
-          <div class="demo-note-card">
-            <div class="demo-note-badge danger-badge">Section 3 — Confidently Wrong</div>
-            <div class="demo-note-topic">S দশা ও DNA প্রতিলিপি</div>
-            <div class="demo-note-row"><span class="demo-note-lbl">Explanation</span><span class="demo-note-val">কোষ চক্র G₁ → S → G₂ → M ক্রমে চলে। DNA শুধুমাত্র S দশায় কপি হয়। "S" মানে সিন্থেসিস — এই দশায় DNA সংশ্লেষণ হয়।</span></div>
-            <div class="demo-note-row"><span class="demo-note-lbl">Why correct</span><span class="demo-note-val">S দশার একটাই উদ্দেশ্য: জিনোমের সম্পূর্ণ কপি তৈরি করা যাতে দুটি কন্যা কোষ পূর্ণ সেট পায়।</span></div>
-            <div class="demo-note-row"><span class="demo-note-lbl">Why tricked</span><span class="demo-note-val">G₂ দেখে মনে হয় "বিভাজনের প্রস্তুতি" তাই ছাত্রছাত্রীরা ভাবে DNA এখনও কপি হচ্ছে — কিন্তু G₂-তে এটি আগেই শেষ।</span></div>
-            <div class="demo-note-trap">ফাঁদ প্রশ্ন: "একটি কোষের DNA পরিমাণ এইমাত্র দ্বিগুণ হলো — এটি কোন দশায় আছে?"</div>
-          </div>
+      <div id="notesRepositoryContainer"></div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODALS
+       ══════════════════════════════════════════════════════════ -->
+
+  <!-- CHAPTER SELECTOR MODAL -->
+  <div class="app-modal-overlay" id="chapterSelectModal">
+    <div class="app-modal-dialog">
+      <button class="modal-close-btn" onclick="App.closeChapterSelector()">✕</button>
+
+      <div class="modal-header-block">
+        <h2 class="modal-title">Select Biology Chapter 🧬</h2>
+        <p class="modal-subtitle">Practice high-yield Medical Admission MCQs by official syllabus chapter:</p>
+      </div>
+
+      <!-- Question Length Picker -->
+      <div class="modal-length-picker">
+        <span class="mlp-label">Exam Length:</span>
+        <div class="mlp-pills">
+          <button class="mlp-pill-btn" data-count="5" onclick="App.setExamLength(5)">5 Questions</button>
+          <button class="mlp-pill-btn active" data-count="10" onclick="App.setExamLength(10)">10 Questions (Standard)</button>
+          <button class="mlp-pill-btn" data-count="15" onclick="App.setExamLength(15)">15 Questions</button>
         </div>
       </div>
 
-    </div><!-- end demo-widget -->
-  </div><!-- end demo-fullscreen-wrap -->
-</div>
+      <!-- Paper Switcher Tabs -->
+      <div class="modal-tabs-row">
+        <button class="modal-tab-btn active" id="tabBotany" onclick="App.switchPaperTab('1st_paper')">
+          Paper 1: Botany (১ম পত্র: উদ্ভিদবিজ্ঞান)
+        </button>
+        <button class="modal-tab-btn" id="tabZoology" onclick="App.switchPaperTab('2nd_paper')">
+          Paper 2: Zoology (২য় পত্র: প্রাণিবিজ্ঞান)
+        </button>
+      </div>
 
-<!-- SCREEN: EXAM -->
-<div class="screen" id="screen-exam">
-  <div class="exam-wrap">
-    <div class="exam-top">
-      <div class="exam-progress">
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <span class="progress-label" id="progressLabel">1 / 5</span>
+      <!-- Botany Chapters Grid -->
+      <div id="botanySection">
+        <div class="chapters-list-grid" id="botanyChaptersList"></div>
       </div>
-      <div class="timer-wrap">
-        <svg class="timer-svg" viewBox="0 0 44 44">
-          <circle class="timer-track" cx="22" cy="22" r="18"/>
-          <circle class="timer-ring" id="timerRing" cx="22" cy="22" r="18"/>
-        </svg>
-        <span class="timer-num" id="timerNum">30</span>
+
+      <!-- Zoology Chapters Grid -->
+      <div id="zoologySection" style="display:none;">
+        <div class="chapters-list-grid" id="zoologyChaptersList"></div>
       </div>
-    </div>
-    <div class="question-box">
-      <p class="question-text" id="questionText"></p>
-    </div>
-    <div class="options-grid" id="optionsGrid"></div>
-    <div class="exam-nav">
-      <button class="btn-next" id="btnNext" disabled>Next →</button>
     </div>
   </div>
-</div>
 
-<!-- SCREEN: RESULT -->
-<div class="screen" id="screen-result">
-  <div class="content-wrap">
-    <div class="result-hero">
-      <div class="score-ring">
-        <svg viewBox="0 0 120 120">
-          <circle class="score-track" cx="60" cy="60" r="50"/>
-          <circle class="score-arc" id="scoreArc" cx="60" cy="60" r="50"/>
-        </svg>
-        <div class="score-inner">
-          <span class="score-num" id="scoreNum">0</span>
-          <span class="score-den">/5</span>
-        </div>
-      </div>
-      <div class="score-meta">
-        <div class="score-title" id="scoreTitle">Exam Complete</div>
-        <div class="score-sub">Biology · 5 Questions</div>
-      </div>
-    </div>
-    <div class="result-list" id="resultList"></div>
-    <div class="result-actions">
-      <button class="btn-action" id="btnViewDNA">View DNA Report →</button>
+  <!-- AI LIVING NOTE GENERATING MODAL -->
+  <div class="app-modal-overlay" id="aiGeneratingModal">
+    <div class="app-modal-dialog" style="max-width:460px; text-align:center; padding:44px 28px;">
+      <div class="ai-spinner-icon">✨🧠✨</div>
+      <h3 style="font-size:1.35rem; color:#fff; margin-bottom:10px;">Analyzing Answering Patterns...</h3>
+      <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.5;">
+        Evaluating your response latencies (&gt;6s), option switches, and panic skips to synthesize customized Bengali study notes and adaptive retake questions.
+      </p>
     </div>
   </div>
-</div>
 
-<!-- SCREEN: DNA -->
-<div class="screen" id="screen-dna">
-  <div class="content-wrap">
-    <div class="dna-header">
-      <h2 class="section-title">DNA Report</h2>
-      <p class="section-sub">Behavior replay of your exam — grouped by thinking pattern</p>
-    </div>
-    <div id="dnaGroups"></div>
-    <div class="result-actions">
-      <button class="btn-action" id="btnViewNotes">Generate স্টাডি নোটস →</button>
-    </div>
-  </div>
-</div>
-
-<!-- SCREEN: NOTES -->
-<div class="screen" id="screen-notes">
-  <div class="content-wrap">
-    <div class="notes-header">
-      <h2 class="section-title">Study Notes</h2>
-      <p class="section-sub">AI-generated from your DNA report</p>
-    </div>
-    <div id="notesLoading" class="notes-loading">
-      <div class="loading-pulse">
-        <div class="pulse-ring"></div>
-        <div class="pulse-dot"></div>
-      </div>
-      <p class="loading-label">AI আপনার DNA রিপোর্ট বিশ্লেষণ করছে<span class="dots"></span></p>
-      <p class="loading-sub"><span id="notesLoadingMsg">AI স্টাডি নোট তৈরি হচ্ছে...</span></p>
-    </div>
-    <div id="notesContent" style="display:none"></div>
-  </div>
-</div>
-
-<script src="js/intro.js"></script>
-<script src="js/questions.js"></script>
-<script src="js/tracker.js"></script>
-<script src="js/dna.js"></script>
-<script src="js/notes.js"></script>
-<script src="js/app.js"></script>
-<script src="js/demo.js"></script>
-<script>
-// ── Boot sequence: intro first, then app ──
-document.addEventListener('DOMContentLoaded', () => {
-  // Hide everything until intro finishes
-  document.getElementById('navbar').style.visibility = 'hidden';
-  document.querySelector('.screen.active').style.visibility = 'hidden';
-
-  Intro.init(() => {
-    // Intro done — reveal the app
-    document.getElementById('navbar').style.visibility = '';
-    document.querySelector('.screen.active').style.visibility = '';
-    // Boot the app (Demo + App init already bound via DOMContentLoaded in their files,
-    // but App.init is safe to call again — it just re-binds listeners)
-  });
-});
-</script>
+  <!-- JAVASCRIPT MODULES -->
+  <script src="js/tracker.js"></script>
+  <script src="js/dna.js"></script>
+  <script src="js/notes.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

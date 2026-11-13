@@ -1,137 +1,173 @@
+// ─── AdmitIQ Dynamic Living Notes Engine ────────────────────────
 const Notes = {
 
-  // Render AI-generated notes into the UI
-  // aiData shape: { slow: [...], confused: [...], danger: [...] }
-  render(aiData) {
-    const container = document.getElementById('notesContent');
-    container.innerHTML = '';
-
-    const sections = [
-      {
-        key: 'slow',
-        label: 'ধীর গতি',
-        badgeClass: 'nb-slow',
-        sectionClass: 'sec-slow',
-        sectionNum: 'Section 1 — Slow',
-        icon: '⏱',
-        renderer: Notes.renderSlowCard
-      },
-      {
-        key: 'confused',
-        label: 'বিভ্রান্ত',
-        badgeClass: 'nb-confused',
-        sectionClass: 'sec-confused',
-        sectionNum: 'Section 2 — Confused',
-        icon: '🔀',
-        renderer: Notes.renderConfusedCard
-      },
-      {
-        key: 'danger',
-        label: 'আত্মবিশ্বাসী ভুল',
-        badgeClass: 'nb-danger',
-        sectionClass: 'sec-danger',
-        sectionNum: 'Section 3 — Danger',
-        icon: '⚠',
-        renderer: Notes.renderDangerCard
-      }
-    ];
-
-    sections.forEach(sec => {
-      const items = aiData[sec.key];
-      if (!items || items.length === 0) return;
-
-      const section = document.createElement('div');
-      section.className = 'notes-section ' + sec.sectionClass;
-
-      let cards = '';
-      items.forEach(item => { cards += sec.renderer(item); });
-
-      section.innerHTML = `
-        <div class="notes-section-title">
-          <span class="notes-badge ${sec.badgeClass}">${sec.sectionNum}</span>
-          <span class="notes-section-label">${sec.label}</span>
-        </div>
-        <div class="notes-cards-wrap">${cards}</div>`;
-
-      container.appendChild(section);
-    });
-
-    container.style.display = 'block';
+  async fetchAllNotes() {
+    try {
+      const res = await fetch('/api/notes');
+      const data = await res.json();
+      return data.notes || [];
+    } catch (e) {
+      console.error('Failed to fetch notes:', e);
+      return [];
+    }
   },
 
-  // Section 1: Slow
-  renderSlowCard(item) {
-    return `
-      <div class="demo-note-card">
-        <div class="demo-note-topic">${item.topic}</div>
-        <div class="demo-note-row">
-          <span class="demo-note-lbl">Explanation</span>
-          <span class="demo-note-val">${item.explanation}</span>
-        </div>
-        <div class="demo-note-row">
-          <span class="demo-note-lbl">Memory trick</span>
-          <span class="demo-note-val">${item.memoryTrick}</span>
-        </div>
-        <div class="demo-note-trap">${item.trapQuestion}</div>
-      </div>`;
-  },
+  async renderNotesPage(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
-  // Section 2: Confused — with comparison table (same flex layout as demo)
-  renderConfusedCard(item) {
-    // item.comparisonTable = [{ concept, description }, ...]
-    // First entry is always the correct concept
-    const headers = item.comparisonTable.map((col, i) =>
-      `<div class="dct-th ${i === 0 ? 'correct-th' : 'wrong-th'}">${col.concept}</div>`
-    ).join('');
-
-    const cells = item.comparisonTable.map((col, i) =>
-      `<div class="dct-td ${i === 0 ? 'correct-td' : 'wrong-td'}">${col.description}</div>`
-    ).join('');
-
-    return `
-      <div class="demo-note-card">
-        <div class="demo-note-topic">${item.topic}</div>
-        <div class="demo-confusion-table">
-          <div class="dct-head">${headers}</div>
-          <div class="dct-body">${cells}</div>
-        </div>
-        <div class="demo-note-row">
-          <span class="demo-note-lbl">Memory trick</span>
-          <span class="demo-note-val">${item.memoryTrick}</span>
-        </div>
-        <div class="demo-note-trap">${item.trapQuestion}</div>
-      </div>`;
-  },
-
-  // Section 3: Danger — confidently wrong
-  renderDangerCard(item) {
-    return `
-      <div class="demo-note-card">
-        <div class="demo-note-topic">${item.topic}</div>
-        <div class="demo-note-row">
-          <span class="demo-note-lbl">Explanation</span>
-          <span class="demo-note-val">${item.explanation}</span>
-        </div>
-        <div class="demo-note-row">
-          <span class="demo-note-lbl">Why correct</span>
-          <span class="demo-note-val">${item.whyCorrect}</span>
-        </div>
-        <div class="demo-note-row">
-          <span class="demo-note-lbl">Why tricked</span>
-          <span class="demo-note-val">${item.whyTricked}</span>
-        </div>
-        <div class="demo-note-trap">${item.trapQuestion}</div>
-      </div>`;
-  },
-
-  // Show error state if API fails
-  renderError(message) {
-    const container = document.getElementById('notesContent');
     container.innerHTML = `
-      <div class="no-group" style="padding: 2rem; text-align:center;">
-        <p style="color: var(--red); margin-bottom: 8px;">Could not generate study notes</p>
-        <p style="font-size:13px; color: var(--text3);">${message || 'Please check your backend connection and try again.'}</p>
-      </div>`;
-    container.style.display = 'block';
+      <div style="text-align:center; padding: 40px; color: var(--text-muted);">
+        <p>Loading your living study notes...</p>
+      </div>
+    `;
+
+    const notes = await this.fetchAllNotes();
+
+    if (notes.length === 0) {
+      container.innerHTML = `
+        <div class="notes-empty-state">
+          <div class="nes-icon">📑</div>
+          <h3 class="nes-title">No Living Study Notes Generated Yet</h3>
+          <p class="nes-desc">
+            পরীক্ষা দিন—আপনার অপশন পরিবর্তন, সিদ্ধান্তহীনতা এবং ভুলের প্যাটার্ন বিশ্লেষণ করে AdmitIQ স্বয়ংক্রিয়ভাবে জীবন্ত স্টাডি নোট তৈরি করবে।
+          </p>
+          <button class="btn-primary" onclick="App.startStandardExam(10)">
+            Start 10-Question Diagnostic Exam →
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="living-notes-grid">
+        ${notes.map(n => this.buildNoteCard(n)).join('')}
+      </div>
+    `;
+  },
+
+  buildNoteCard(note) {
+    const c = note.content || {};
+    const patternMeta = DNA.meta[note.patternType] || { name: 'Behavioral Pattern', icon: '📝', badge: 'Cognitive', color: '#7c6fff' };
+
+    // Format side-by-side comparison box if present (for Pattern 3 & 4)
+    let compHTML = '';
+    const comp = c.comparisonBox;
+    if (comp && (comp.option1 || comp.optionA)) {
+      const opt1 = comp.option1 || comp.optionA;
+      const opt2 = comp.option2 || comp.optionB;
+      const diffKey = comp.keyDifference || comp.distinctionKey;
+
+      compHTML = `
+        <div class="side-comparison-box">
+          <div class="scb-title">
+            <span>⚖️ দ্বিধাগ্রস্ত অপশন দুটির তুলনামূলক বিশ্লেষণ (Comparison):</span>
+          </div>
+          <div class="scb-grid">
+            <div class="scb-col">
+              <h5>${opt1.name || 'Option A'}</h5>
+              <p>${opt1.definition || opt1.role || ''}</p>
+            </div>
+            <div class="scb-col">
+              <h5>${opt2.name || 'Option B'}</h5>
+              <p>${opt2.definition || opt2.role || ''}</p>
+            </div>
+          </div>
+          ${diffKey ? `<div class="scb-key-diff"><strong>পার্থক্যের মূল চাবিকাঠি:</strong> ${diffKey}</div>` : ''}
+        </div>
+      `;
+    }
+
+    const examPlural = note.examsCount > 1 ? 'exams' : 'exam';
+
+    return `
+      <div class="living-note-card" style="border-top: 3px solid ${patternMeta.color};">
+        <!-- Top Metadata Row -->
+        <div class="lnc-header">
+          <div class="lnc-badges-group">
+            <span class="lnc-version">v${note.version}.0</span>
+            <span class="lnc-update-info">🔄 Updated after ${note.examsCount} ${examPlural}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:0.8rem; color:var(--text-muted); font-weight:700;">Mastery:</span>
+            <span style="font-size:0.92rem; font-weight:800; color:${note.masteryPercent >= 80 ? 'var(--accent-green)' : 'var(--accent-amber)'};">
+              ${note.masteryPercent}%
+            </span>
+          </div>
+        </div>
+
+        <!-- Pattern Identification Badge -->
+        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:6px; margin-bottom:12px;">
+          <span>${patternMeta.icon}</span>
+          <span style="font-size:0.8rem; font-weight:700; color:${patternMeta.color};">${patternMeta.name}</span>
+          <span style="font-size:0.72rem; color:var(--text-dim); border-left:1px solid rgba(255,255,255,0.1); padding-left:6px;">${patternMeta.badge}</span>
+        </div>
+
+        <!-- Topic Title (Bangla) -->
+        <h3 class="lnc-topic-title">${note.topicName}</h3>
+
+        <!-- Cognitive Diagnosis (Bangla) -->
+        ${c.diagnosis ? `<p class="lnc-diagnosis-text">🧠 <em>${c.diagnosis}</em></p>` : ''}
+
+        <!-- Core Concept Box (Bangla) -->
+        <div class="lnc-concept-card">
+          <div class="lbl">সঠিক বৈজ্ঞানিক তত্ত্ব (Core Principle):</div>
+          <p>${c.coreConcept || c.explanation || 'মূল ধারণাটি গুরুত্ব সহকারে লক্ষ্য করুন।'}</p>
+        </div>
+
+        <!-- Dynamic Side-by-Side Comparison Box -->
+        ${compHTML}
+
+        <!-- Mnemonic Trick (Bangla) -->
+        ${c.memoryTrick ? `
+          <div class="mnemonic-banner">
+            <span style="font-size:1.3rem;">💡</span>
+            <div>
+              <strong>মনে রাখার ছন্দ (Mnemonic Trick):</strong>
+              <p style="margin-top:2px;">${c.memoryTrick}</p>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Negative Marking Warning (Bangla) -->
+        ${c.medicalTrapAlert ? `
+          <div class="trap-alert-banner">
+            <span style="font-size:1.3rem;">⚠️</span>
+            <div>
+              <strong>মেডিকেল অ্যাডমিশন ফাঁদ (Negative Marking Alert):</strong>
+              <p style="margin-top:2px;">${c.medicalTrapAlert}</p>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Footer Actions -->
+        <div class="lnc-footer-row">
+          <div>
+            ${note.isResolved
+              ? '<span style="color:var(--accent-green); font-size:0.82rem; font-weight:700;">✓ Concept Mastered</span>'
+              : '<span style="color:var(--accent-amber); font-size:0.82rem; font-weight:700;">⚡ Active Recall Needed</span>'}
+          </div>
+          <button class="btn-primary" style="padding:8px 18px; font-size:0.84rem;" onclick="Notes.startAdaptiveRetake(${note.id})">
+            Take Targeted Retake 🎯
+          </button>
+        </div>
+      </div>
+    `;
+  },
+
+  async startAdaptiveRetake(noteId) {
+    try {
+      const res = await fetch(`/api/notes/${noteId}/retake`, { method: 'POST' });
+      const data = await res.json();
+      if (data.questions && data.questions.length > 0) {
+        App.startAdaptiveRetakeExam(data);
+      } else {
+        alert('Could not generate adaptive retake questions for this note.');
+      }
+    } catch (e) {
+      console.error('Error starting adaptive retake:', e);
+      alert('Error connecting to adaptive retake engine.');
+    }
   }
 };
