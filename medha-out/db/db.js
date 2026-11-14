@@ -95,11 +95,12 @@ function initSchema() {
         )
       `);
 
-      // 6. Dynamic Living Study Notes
+      // 6. Dynamic Living Study Notes (Item-level)
       db.run(`
         CREATE TABLE IF NOT EXISTS study_notes (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           user_id INTEGER DEFAULT 1,
+          session_id INTEGER,
           chapter_id INTEGER,
           topic_name TEXT NOT NULL,
           pattern_type INTEGER NOT NULL,
@@ -109,6 +110,30 @@ function initSchema() {
           exams_count INTEGER DEFAULT 1,
           mastery_percent REAL DEFAULT 40.0,
           is_resolved INTEGER DEFAULT 0,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (session_id) REFERENCES exam_sessions(id),
+          FOREIGN KEY (chapter_id) REFERENCES chapters(id)
+        )
+      `);
+
+      // 7. Unified Chapter-Wise Living Study Documents (Multi-Exam Cognitive Tracker)
+      db.run(`
+        CREATE TABLE IF NOT EXISTS chapter_living_notes (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER DEFAULT 1,
+          chapter_id INTEGER UNIQUE,
+          paper TEXT,
+          chapter_no INTEGER,
+          title_bn TEXT,
+          version INTEGER DEFAULT 1,
+          exams_count INTEGER DEFAULT 1,
+          mastery_percent REAL DEFAULT 40.0,
+          comparison_table_json TEXT,  /* [{ topic, option1, option2, keyDiff, isResolved, status }] */
+          danger_traps_json TEXT,      /* [{ questionId, topic, stem, choice, correctChoice, trap, isRepeat, repeatCount }] */
+          memory_tricks_json TEXT,     /* [{ topic, mnemonic, speedTrigger }] */
+          uncharted_primers_json TEXT, /* [{ topic, primerText, keyFacts }] */
+          mastered_concepts_json TEXT, /* [{ topic, resolvedFrom, speedSec }] */
+          last_exam_session_id INTEGER,
           updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (chapter_id) REFERENCES chapters(id)
         )
