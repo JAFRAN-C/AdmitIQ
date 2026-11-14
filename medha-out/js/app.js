@@ -171,7 +171,7 @@ const App = {
         ...(data.chapters?.zoology || [])
       ];
 
-      // Fetch living notes metadata to know which chapters are tested
+      // Fetch living notes metadata & profile stats to update dashboard
       try {
         const notesRes = await fetch('/api/notes/living');
         const notesData = await notesRes.json();
@@ -183,11 +183,22 @@ const App = {
           }
         });
 
-        const testedCount = Object.keys(this.activeNotesMeta).length;
+        // Also fetch profile stats for dashboard metrics
+        const pRes = await fetch('/api/profile');
+        const pData = await pRes.json();
+        const stats = pData.stats || {};
+
+        const elTot = document.getElementById('dashTotalExams');
+        const elAcc = document.getElementById('dashOverallAcc');
+        const elSpd = document.getElementById('dashAvgSpeed');
         const countEl = document.getElementById('dashChaptersTestedCount');
-        if (countEl) countEl.textContent = `${testedCount} / 18`;
+
+        if (elTot) elTot.textContent = `${stats.totalExams || 0}টি পরীক্ষা`;
+        if (elAcc) elAcc.textContent = `${stats.overallAccuracy || 0}%`;
+        if (elSpd) elSpd.textContent = `${stats.avgSpeed || 0}s`;
+        if (countEl) countEl.textContent = `${stats.chaptersTested || Object.keys(this.activeNotesMeta).length} / 18`;
       } catch (ne) {
-        console.warn('Living notes count fetch error:', ne);
+        console.warn('Dashboard stats fetch error:', ne);
       }
 
       this.renderHomeChaptersGrid();
@@ -713,6 +724,8 @@ const App = {
 
       return {
         questionId: q.id,
+        chapterId: q.chapterId || exam.chapterId,
+        paper: q.paper,
         questionText: q.text,
         options: q.options,
         correctAnswerIndex: q.correct,
@@ -776,7 +789,7 @@ const App = {
     if (totalQEl) totalQEl.textContent = result.totalQuestions;
 
     const pMeta = DNA.meta[result.dominantPattern] || DNA.meta[0];
-    if (patternTitle) patternTitle.textContent = `${pMeta.icon} Pattern ${result.dominantPattern}: ${pMeta.name} (${pMeta.badge})`;
+    if (patternTitle) patternTitle.textContent = `${pMeta.icon} প্রধান পর্যবেক্ষণ: ${pMeta.name}`;
     if (patternDesc) patternDesc.textContent = pMeta.desc;
 
     // Render detailed 7-Pattern Breakdown
@@ -785,25 +798,16 @@ const App = {
     // Render Question-by-Question Telemetry Breakdown
     DNA.renderQuestionBreakdown('examQuestionsBreakdownSlot', result.classifiedItems);
 
-    // Initial placeholder for session notes
+    // Render 5-Box Structured Study Notes immediately!
     const sessionNotesContainer = document.getElementById('examSessionNotesContainer');
     const sessionNotesStatus = document.getElementById('examSessionNotesStatus');
 
-    if (result.chapterLivingNote) {
-      if (sessionNotesStatus) sessionNotesStatus.textContent = `Living Document v${result.chapterLivingNote.version}.0 Synchronized ✨`;
-      Notes.renderNotesToElement(result.chapterLivingNote, sessionNotesContainer);
+    const notesToRender = result.sessionNotes || result.chapterLivingNote;
+    if (notesToRender) {
+      if (sessionNotesStatus) sessionNotesStatus.textContent = '৫টি ক্যাটাগরিতে সাজানো স্টাডি নোট প্রস্তুত ✨';
+      Notes.renderNotesToElement(notesToRender, sessionNotesContainer);
     } else {
-      if (sessionNotesStatus) sessionNotesStatus.textContent = 'Synthesizing living notes... 🧠';
-      if (sessionNotesContainer) {
-        sessionNotesContainer.innerHTML = `
-          <div style="background:var(--bg-subtle); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:24px; text-align:center;">
-            <div style="font-size:1.8rem; margin-bottom:8px;">✨🧠✨</div>
-            <p style="color:var(--text-muted); font-size:0.92rem;">
-              Analyzing answering telemetry to synthesize unified chapter study notes...
-            </p>
-          </div>
-        `;
-      }
+      if (sessionNotesStatus) sessionNotesStatus.textContent = 'স্টাডি নোট প্রস্তুত হচ্ছে...';
     }
   },
 

@@ -174,12 +174,12 @@ const Notes = {
         // Render Unified Living Document with all 5 sections
         container.innerHTML = this.renderChapterDocument(livingDoc);
       } else if (targetChapter) {
-        // Chapter has NOT been attempted yet: Render High-Yield Syllabus Primer & Diagnostic Unlock Screen!
+        // Chapter has NOT been attempted yet: Render High-Yield Syllabus Primer
         container.innerHTML = this.renderChapterPrimerCard(targetChapter);
       } else {
         container.innerHTML = `
           <div style="background:var(--bg-card); border:1px solid var(--border-light); border-radius:var(--radius-md); padding:40px; text-align:center; color:var(--text-muted);">
-            Chapter not found. Please select a valid chapter from the strip above.
+            অধ্যায়টি খুঁজে পাওয়া যায়নি। উপরের তালিকা থেকে একটি অধ্যায় নির্বাচন করুন।
           </div>
         `;
       }
@@ -215,8 +215,8 @@ const Notes = {
 
     let stripHTML = `
       <div class="notes-chapter-pill ${isAllActive ? 'active' : ''}" onclick="Notes.setChapterFilter(null)">
-        <span>📚 All Chapters</span>
-        <span class="pill-badge ${isAllActive ? 'active-doc' : 'prime-doc'}">${this.cachedLivingDocs.length} Active Docs</span>
+        <span>📚 সকল অধ্যায়</span>
+        <span class="pill-badge ${isAllActive ? 'active-doc' : 'prime-doc'}">${this.cachedLivingDocs.length}টি তৈরি নোট</span>
       </div>
     `;
 
@@ -227,11 +227,11 @@ const Notes = {
 
       return `
         <div class="notes-chapter-pill ${isSelected ? 'active' : ''}" onclick="Notes.setChapterFilter(${c.id})">
-          <span>${paperIcon} Ch ${c.chapter_no}: ${c.name_bn}</span>
+          <span>${paperIcon} অধ্যায় ${c.chapter_no}: ${c.name_bn}</span>
           ${doc ? `
-            <span class="pill-badge active-doc">v${doc.version || 1}.0 ✨</span>
+            <span class="pill-badge active-doc">v${doc.version || 1}.0 নোট</span>
           ` : `
-            <span class="pill-badge prime-doc">Primer 📘</span>
+            <span class="pill-badge prime-doc">প্রাইমার 📘</span>
           `}
         </div>
       `;
@@ -242,7 +242,7 @@ const Notes = {
 
   setPaperFilter(paperKey) {
     this.currentFilters.paper = paperKey;
-    this.currentFilters.chapterId = null; // reset specific chapter when switching paper
+    this.currentFilters.chapterId = null;
     this.renderNotesPage('notesRepositoryContainer');
   },
 
@@ -251,7 +251,7 @@ const Notes = {
     this.renderNotesPage('notesRepositoryContainer');
   },
 
-  // ─── HIGH-YIELD ADMISSION PRIMER CARD (ZERO-EMPTY / ZERO-WHITE STATE) ──
+  // ─── HIGH-YIELD ADMISSION PRIMER CARD (ZERO-EMPTY STATE) ─────────
   renderChapterPrimerCard(chapter) {
     const primer = this.chapterSyllabusPrimer[chapter.chapter_no] || {
       topics: 'মেডিকেল ভর্তি পরীক্ষার জন্য এই অধ্যায়ের প্রতিটি অনুচ্ছেদ, বৈজ্ঞানিক নাম, উদাহরণ এবং পার্থক্যসমূহ অত্যন্ত সতর্কতার সাথে আত্মস্থ করতে হবে।',
@@ -259,7 +259,7 @@ const Notes = {
       dghsTrap: 'বিভ্রান্তিকর অপশন এবং দ্রুত ভুল করার ফাঁদ এড়াতে তাত্ত্বিক ধারণা স্পষ্ট রাখা প্রয়োজন।'
     };
 
-    const paperName = chapter.paper === '1st_paper' ? 'HSC Biology 1st Paper (উদ্ভিদবিজ্ঞান)' : 'HSC Biology 2nd Paper (প্রাণিবিজ্ঞান)';
+    const paperName = chapter.paper === '1st_paper' ? 'HSC জীববিজ্ঞান ১ম পত্র (উদ্ভিদবিজ্ঞান)' : 'HSC জীববিজ্ঞান ২য় পত্র (প্রাণিবিজ্ঞান)';
 
     return `
       <article class="chapter-primer-unlocked-card" id="chapterPrimer-${chapter.id}">
@@ -267,17 +267,17 @@ const Notes = {
         <div class="doc-sheet-header">
           <div class="doc-header-top-row">
             <div>
-              <span class="doc-paper-tag">${paperName} · Chapter ${chapter.chapter_no}</span>
+              <span class="doc-paper-tag">${paperName} · অধ্যায় ${chapter.chapter_no}</span>
               <h2 class="doc-chapter-title">${chapter.name_bn}</h2>
               <div style="color:var(--text-muted); font-size:0.92rem; margin-top:2px;">
                 ${chapter.name_en || ''}
               </div>
               <div class="doc-badges-row" style="margin-top:10px;">
                 <span class="doc-version-pill" style="background:rgba(99,102,241,0.15); color:var(--accent-purple); border-color:rgba(99,102,241,0.3);">
-                  High-Yield Admission Primer 📘
+                  ভর্তি প্রস্তুতি প্রাইমার 📘
                 </span>
                 <span class="doc-exams-count-pill" style="background:rgba(255,255,255,0.06); color:var(--text-dim); border-color:var(--border-light);">
-                  🎯 Diagnostic Exam Unattempted
+                  🎯 পরীক্ষা এখনো দেওয়া হয়নি
                 </span>
               </div>
             </div>
@@ -294,13 +294,13 @@ const Notes = {
         <!-- Admission Importance & Weightage Box -->
         <div style="background:rgba(99,102,241,0.08); border-left:4px solid var(--accent-purple); border-radius:var(--radius-sm); padding:18px 22px; margin-bottom:24px;">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <strong style="color:#fff; font-size:1.02rem;">মেডিকেল ভর্তি গুরুত্ব ও প্রশ্নপ্রবণতা (DGHS MAT Trend):</strong>
+            <strong style="color:#fff; font-size:1.02rem;">মেডিকেল ভর্তি গুরুত্ব ও প্রশ্নপ্রবণতা:</strong>
             <span style="background:rgba(99,102,241,0.25); color:#fff; font-size:0.8rem; font-weight:800; padding:3px 10px; border-radius:12px;">
               ${primer.weightage}
             </span>
           </div>
-          <p style="color:var(--text-muted); font-size:0.88rem; margin:8px 0 0 0; line-height:1.5;">
-            মেডিকেল ভর্তি পরীক্ষায় সাফল্য নির্ধারণে এই অধ্যায়টি অন্যতম ভূমিকা পালন করে। নিচে প্রদত্ত হাই-ইয়েল্ড টপিকগুলো থেকে সরাসরি প্রশ্ন আসে।
+          <p style="color:var(--text-muted); font-size:0.9rem; margin:8px 0 0 0; line-height:1.6;">
+            মেডিকেল ভর্তি পরীক্ষায় সাফল্য নির্ধারণে এই অধ্যায়টি অত্যন্ত গুরুত্বপূর্ণ। নিচে প্রদত্ত বিষয়গুলো থেকে সরাসরি প্রশ্ন আসে:
           </p>
         </div>
 
@@ -308,9 +308,9 @@ const Notes = {
         <section style="margin-bottom:24px;">
           <h3 class="doc-section-header">
             <span>📚</span>
-            <span>অধ্যায়ের আবশ্যকীয় হাই-ইয়েল্ড টপিকসমূহ (Must-Know Admission Topics)</span>
+            <span>অধ্যায়ের আবশ্যকীয় গুরুত্বপূর্ণ বিষয়সমূহ (Must-Know Topics)</span>
           </h3>
-          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:16px 20px; line-height:1.7; font-family:var(--font-bangla); font-size:0.98rem; color:#fff;">
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:18px 20px; line-height:1.75; font-family:var(--font-bangla); font-size:1rem; color:#fff;">
             ${primer.topics}
           </div>
         </section>
@@ -319,9 +319,9 @@ const Notes = {
         <section style="margin-bottom:28px;">
           <h3 class="doc-section-header danger-header">
             <span>⚠️</span>
-            <span>ভর্তি পরীক্ষার বিভ্রান্তিকর ফাঁদ ও নেগেটিভ মার্কিং সতর্কতা (Admission Trap Mechanism)</span>
+            <span>ভর্তি পরীক্ষার বিভ্রান্তিকর অপশন ও নেগেটিভ মার্কিং সতর্কতা</span>
           </h3>
-          <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:var(--radius-sm); padding:16px 20px; color:#fff; line-height:1.6; font-size:0.92rem;">
+          <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.25); border-radius:var(--radius-sm); padding:16px 20px; color:#fff; line-height:1.65; font-size:0.94rem;">
             <strong>পরীক্ষকদের প্রিয় ফাঁদ:</strong> ${primer.dghsTrap}
           </div>
         </section>
@@ -329,18 +329,18 @@ const Notes = {
         <!-- How Living Notes Work Explanation -->
         <div style="background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.25); border-radius:var(--radius-sm); padding:20px 24px; margin-bottom:28px;">
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-            <span style="font-size:1.4rem;">🧬</span>
-            <strong style="color:var(--accent-green); font-size:1rem;">স্বয়ংক্রিয় স্টাডি নোট কীভাবে আপগ্রেড হবে?</strong>
+            <span style="font-size:1.4rem;">📝</span>
+            <strong style="color:var(--accent-green); font-size:1rem;">স্বয়ংক্রিয় স্টাডি নোট কীভাবে তৈরি হবে?</strong>
           </div>
-          <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.6; margin:0;">
-            এই অধ্যায়ের ওপর পরীক্ষা দিলে আপনার উত্তর দেওয়ার গতি, দ্বিধাগ্রস্ত অপশন (Option Switching) এবং দ্রুত ভুলের আচরণ স্বয়ংক্রিয়ভাবে রেকর্ড হবে। সাথে সাথেই এই প্রাইমার পৃষ্ঠাটি <strong>তুলনামূলক পার্থক্যের ছক, নেগেটিভ মার্কিং অ্যালার্ট, এবং মেমরি নিমোনিক্সে</strong> সমন্বিত একটি লিভিং স্টাডি ডক-এ রূপান্তরিত হবে!
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.65; margin:0;">
+            এই অধ্যায়ের ওপর পরীক্ষা দিলে আপনার উত্তর দেওয়ার গতি, দ্বিধাগ্রস্ত অপশন ও ভুলের ধরন স্বয়ংক্রিয়ভাবে রেকর্ড হবে। সাথে সাথেই এই প্রাইমার পৃষ্ঠাটি <strong>তুলনামূলক পার্থক্যের ছক, নেগেটিভ মার্কিং সতর্কতা এবং সহজে মনে রাখার ছন্দে</strong> সমন্বিত একটি সাজানো স্টাডি নোটে রূপান্তরিত হবে!
           </p>
         </div>
 
         <!-- Prominent Launch CTA -->
         <div style="text-align:center; padding:16px 0;">
           <button class="btn-primary" style="padding:14px 32px; font-size:1.05rem;" onclick="App.startChapterExam(${chapter.id}, '${chapter.name_bn.replace(/'/g, "\\'")}', '${chapter.paper}')">
-            🎯 Start 10-Question Diagnostic Exam on this Chapter →
+            🎯 এই অধ্যায়ের ওপর ১০টি এমসিকিউ পরীক্ষা দিন →
           </button>
         </div>
       </article>
@@ -359,25 +359,25 @@ const Notes = {
         <!-- Hub Intro Banner -->
         <div style="background:var(--bg-card); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:28px 32px; margin-bottom:28px;">
           <div style="display:flex; align-items:center; gap:14px; margin-bottom:12px;">
-            <div style="font-size:2rem;">🧬🩺</div>
+            <div style="font-size:2rem;">📚🩺</div>
             <div>
               <h2 style="font-size:1.4rem; font-weight:800; color:#fff; margin:0;">
-                HSC Biology Medical Admission Living Notes Library
+                এইচএসসি জীববিজ্ঞান মেডিকেল ভর্তি স্টাডি নোট লাইব্রেরি
               </h2>
               <p style="color:var(--text-muted); font-size:0.9rem; margin:4px 0 0 0;">
-                ১৮টি অধ্যায়ের সমন্বিত পাঠ্য তথ্য, নেগেটিভ মার্কিং ফাঁদ এবং রিটেক পরীক্ষার প্রস্তুতি কেন্দ্র
+                ১৮টি অধ্যায়ের গুরুত্বপূর্ণ পাঠ্য তথ্য, নেগেটিভ মার্কিং ফাঁদ এবং রিভিশন কেন্দ্র
               </p>
             </div>
           </div>
-          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6; max-width:840px; margin:0 0 16px 0;">
-            AdmitIQ স্ট্যাটিক নোটের চেয়ে ভিন্ন। আপনি যখনই কোনো অধ্যায়ের পরীক্ষা দেন, আপনার চিন্তা করার গতি ও ভুলের ধরন বিশ্লেষণ করে লেকচার শিট ও পিডিএফ স্টাইলে নোট স্বয়ংক্রিয়ভাবে তৈরি হয়। যেকোনো অধ্যায় বেছে নিয়ে অনুশীলন শুরু করুন:
+          <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.65; max-width:840px; margin:0 0 16px 0;">
+            যেকোনো অধ্যায়ের ওপর পরীক্ষা দিলে আপনার ভুলের ধরন ও দ্বিধাগ্রস্ত অপশন অনুযায়ী ৫টি ক্যাটাগরিতে সাজানো স্টাডি নোট এখানে যুক্ত হবে। অনুশীলন শুরু করতে নিচের যেকোনো অধ্যায় বেছে নিন:
           </p>
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
             <button class="btn-primary" onclick="App.startStandardExam(10)">
-              ⚡ Take 10-MCQ Diagnostic Exam
+              ⚡ ১০টি এমসিকিউ মডেল টেস্ট দিন
             </button>
             <button class="btn-secondary" onclick="App.showScreen('chapters')">
-              📚 Browse All 18 Chapters →
+              📚 সকল অধ্যায় দেখুন →
             </button>
           </div>
         </div>
@@ -386,36 +386,36 @@ const Notes = {
         <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:18px;">
           ${chapters.map(c => {
             const primer = this.chapterSyllabusPrimer[c.chapter_no] || {
-              topics: 'মেডিকেল ভর্তি পরীক্ষার জন্য এই অধ্যায়ের প্রতিটি কনসেপ্ট অত্যন্ত সতর্কতার সাথে পড়া প্রয়োজন।',
+              topics: 'মেডিকেল ভর্তি পরীক্ষার জন্য এই অধ্যায়ের প্রতিটি বিষয় সতর্কতার সাথে পড়া প্রয়োজন।',
               weightage: 'প্রতি বছর ১-২টি প্রশ্ন আসে'
             };
-            const paperName = c.paper === '1st_paper' ? '🌿 Botany' : '🔬 Zoology';
+            const paperName = c.paper === '1st_paper' ? '🌿 ১ম পত্র (উদ্ভিদবিজ্ঞান)' : '🔬 ২য় পত্র (প্রাণিবিজ্ঞান)';
 
             return `
               <div class="chapter-interactive-card" style="padding:22px;">
                 <div class="cic-top">
                   <div class="cic-header-row">
-                    <span class="cic-chapter-pill">Chapter ${c.chapter_no}</span>
+                    <span class="cic-chapter-pill">অধ্যায় ${c.chapter_no}</span>
                     <span style="font-size:0.75rem; color:var(--accent-purple); font-weight:700;">${primer.weightage}</span>
                   </div>
                   <h4 class="cic-title-bn" style="font-size:1.15rem;">${c.name_bn}</h4>
                   <div class="cic-title-en" style="margin-bottom:12px;">${c.name_en || ''}</div>
-                  <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); border-radius:6px; padding:10px 12px; font-size:0.84rem; color:var(--text-muted); line-height:1.5; margin-bottom:12px;">
-                    <strong style="color:var(--text-dim); display:block; font-size:0.75rem; text-transform:uppercase; margin-bottom:2px;">হাই-ইয়েল্ড টপিক:</strong>
-                    ${primer.topics.length > 90 ? primer.topics.substring(0, 90) + '...' : primer.topics}
+                  <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); border-radius:6px; padding:10px 12px; font-size:0.86rem; color:var(--text-muted); line-height:1.55; margin-bottom:12px;">
+                    <strong style="color:var(--text-dim); display:block; font-size:0.75rem; text-transform:uppercase; margin-bottom:2px;">গুরুত্বপূর্ণ বিষয়:</strong>
+                    ${primer.topics.length > 95 ? primer.topics.substring(0, 95) + '...' : primer.topics}
                   </div>
                   <div style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="font-size:0.75rem; color:var(--text-dim); font-weight:700;">${paperName}</span>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">${c.total_mcqs || 3} MCQs ready</span>
+                    <span style="font-size:0.75rem; color:var(--text-muted);">${c.total_mcqs || 3}টি প্রশ্ন প্রস্তুত</span>
                   </div>
                 </div>
 
                 <div class="cic-actions-row">
                   <button class="btn-primary" onclick="App.startChapterExam(${c.id}, '${c.name_bn.replace(/'/g, "\\'")}', '${c.paper}')">
-                    🎯 Start Exam
+                    🎯 পরীক্ষা দিন
                   </button>
                   <button class="btn-secondary" onclick="Notes.setChapterFilter(${c.id})">
-                    📘 Read Primer
+                    📘 প্রাইমার পড়ুন
                   </button>
                 </div>
               </div>
@@ -426,15 +426,15 @@ const Notes = {
     `;
   },
 
-  // ─── UNIFIED CHAPTER LIVING DOCUMENT RENDERER (LECTURE / PDF STYLE) ───
+  // ─── UNIFIED CHAPTER LIVING DOCUMENT RENDERER (5 CONSOLIDATED BOXES) ───
   renderChapterDocument(doc) {
     if (!doc) return '';
 
-    const paperName = doc.paper === '1st_paper' ? 'HSC Biology 1st Paper (উদ্ভিদবিজ্ঞান)' : 'HSC Biology 2nd Paper (প্রাণিবিজ্ঞান)';
-    const chapterTitle = doc.titleBn || doc.chapterName || `Chapter ${doc.chapterNo || ''}`;
+    const paperName = doc.paper === '1st_paper' ? 'HSC জীববিজ্ঞান ১ম পত্র (উদ্ভিদবিজ্ঞান)' : 'HSC জীববিজ্ঞান ২য় পত্র (প্রাণিবিজ্ঞান)';
+    const chapterTitle = doc.titleBn || doc.chapterName || `অধ্যায় ${doc.chapterNo || ''}`;
     const examsCount = doc.examsCount || 1;
     const version = doc.version || 1;
-    const masteryPercent = Math.min(100, Math.max(20, doc.masteryPercent || 45));
+    const masteryPercent = Math.min(100, Math.max(20, Math.round(doc.masteryPercent || 50)));
 
     const compTable = doc.comparisonTable || [];
     const dangerTraps = doc.dangerTraps || [];
@@ -442,7 +442,7 @@ const Notes = {
     const unchartedPrimers = doc.unchartedPrimers || [];
     const masteredConcepts = doc.masteredConcepts || [];
 
-    // 1. COMPARISON TABLE HTML (SECTION 1)
+    // ─── BOX 1: OPTION CONFUSION COMPARISON TABLE (Pattern 3 & 4) ───
     let compTableHTML = '';
     if (compTable.length > 0) {
       compTableHTML = `
@@ -450,11 +450,11 @@ const Notes = {
           <table class="unified-comp-table">
             <thead>
               <tr>
-                <th style="width:20%;">বিষয় / টপিক</th>
-                <th style="width:24%;">আপনার দ্বিধাগ্রস্ত অপশন (Confusion)</th>
-                <th style="width:26%;">সঠিক উত্তর ও বৈজ্ঞানিক তথ্য</th>
-                <th style="width:20%;">পার্থক্য মনে রাখার নিশ্চিত কৌশল</th>
-                <th style="width:10%;">স্ট্যাটাস</th>
+                <th style="width:20%;">টপিক / বিষয়</th>
+                <th style="width:25%;">দ্বিধাগ্রস্ত ২টি অপশন (Confusion)</th>
+                <th style="width:25%;">প্রকৃত সঠিক তথ্য ও উত্তর</th>
+                <th style="width:20%;">মনে রাখার নিশ্চিত কৌশল</th>
+                <th style="width:10%;">বর্তমান অবস্থা</th>
               </tr>
             </thead>
             <tbody>
@@ -463,13 +463,13 @@ const Notes = {
                   <td><strong>${row.topic || 'টপিক'}</strong></td>
                   <td>
                     <span style="color:var(--accent-red); font-weight:700;">${row.option1 || 'অপশন ১'}</span>
-                    <span style="color:var(--text-muted); font-size:0.8rem; margin:0 4px;">vs</span>
+                    <span style="color:var(--text-muted); font-size:0.8rem; margin:0 4px;">বনাম</span>
                     <span style="color:var(--accent-purple); font-weight:700;">${row.option2 || 'অপশন ২'}</span>
                   </td>
                   <td>
                     <span style="color:var(--accent-green); font-weight:700;">${row.correctOption || row.option2 || 'সঠিক উত্তর'}</span>
                   </td>
-                  <td style="font-size:0.84rem; color:var(--text-muted);">
+                  <td style="font-size:0.86rem; color:var(--text-muted); line-height:1.5;">
                     ${row.keyDiff || 'উভয় অপশনের মাঝে মূল কার্যকরী পার্থক্যটি মনে রাখুন।'}
                   </td>
                   <td>
@@ -485,13 +485,13 @@ const Notes = {
       `;
     } else {
       compTableHTML = `
-        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:20px; color:var(--text-muted); font-size:0.88rem;">
-          ✨ এই অধ্যায়ে কোনো অপশন পরিবর্তন বা দ্বিধাদ্বন্দ্ব পরিলক্ষিত হয়নি। চমৎকার মানসিক স্থিরতা!
+        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:16px 20px; color:var(--text-muted); font-size:0.9rem;">
+          ✨ কোনো অপশন পরিবর্তন বা দ্বিধাদ্বন্দ্ব পরিলক্ষিত হয়নি। চমৎকার মানসিক স্থিরতা!
         </div>
       `;
     }
 
-    // 2. DANGER TRAPS HTML (SECTION 2 - REPEAT DANGER TRAPS PROMINENTLY HIGHLIGHTED)
+    // ─── BOX 2: FAST CARELESS MISTAKES & REPEAT DANGER TRAPS (Pattern 5, 4, 2) ───
     let dangerTrapsHTML = '';
     if (dangerTraps.length > 0) {
       dangerTrapsHTML = dangerTraps.map(trap => {
@@ -504,22 +504,22 @@ const Notes = {
               <div class="repeat-danger-badge">
                 <span>🚨 REPEAT DANGER TRAP (মারাত্মক পুনরাবৃত্তিমূলক ভুল — ${repeatCount} বার একই ভুল!)</span>
               </div>
-              <div style="color:var(--accent-red); font-size:0.88rem; font-weight:700; margin-bottom:10px;">
-                ⚠️ সতর্কবার্তা: আপনি বিগত ${repeatCount}টি পরীক্ষায় ক্রমাগত একই ভুল করছেন! মেডিকেল ভর্তি পরীক্ষায় এই ভুলের জন্য -০.২৫ নেগেটিভ মার্কসহ ১.২৫ নম্বর কাটা যাবে। এখনই পাঠ্যবই থেকে কনসেপ্ট ঝালাই করে নিন।
+              <div style="color:var(--accent-red); font-size:0.9rem; font-weight:700; margin-bottom:10px;">
+                ⚠️ সতর্কবার্তা: আপনি বিগত ${repeatCount}টি পরীক্ষায় ক্রমাগত একই ভুল করছেন! ভর্তি পরীক্ষায় এই ভুলের জন্য -০.২৫ নেগেটিভ মার্কসহ ১.২৫ নম্বর কাটা যাবে। পাঠ্যবই থেকে এই তথ্যটি এখনই ঝালাই করে নিন।
               </div>
             ` : `
               <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,51,102,0.15); color:var(--accent-red); font-size:0.76rem; font-weight:800; padding:2px 8px; border-radius:6px; margin-bottom:8px;">
-                <span>⚠️ নেগেটিভ মার্কিং ফাঁদ (-০.২৫ ঝুঁকি)</span>
+                <span>⚠️ তাড়াহুড়োয় ভুল / নেগেটিভ মার্কিং ফাঁদ (-০.২৫ ঝুঁকি)</span>
               </div>
             `}
 
-            <div style="font-family:var(--font-bangla); color:#fff; font-size:0.95rem; font-weight:700; margin-bottom:6px; line-height:1.4;">
+            <div style="font-family:var(--font-bangla); color:#fff; font-size:0.98rem; font-weight:700; margin-bottom:8px; line-height:1.5;">
               ${trap.stem ? `প্রশ্ন: "${trap.stem}"` : trap.topic}
             </div>
 
-            <div style="display:flex; flex-wrap:wrap; gap:16px; margin:8px 0; font-size:0.86rem;">
+            <div style="display:flex; flex-wrap:wrap; gap:16px; margin:8px 0; font-size:0.88rem;">
               <div>
-                <span style="color:var(--text-dim);">আপনার দ্রুত পছন্দ:</span>
+                <span style="color:var(--text-dim);">আপনার ভুল পছন্দ:</span>
                 <span style="color:var(--accent-red); font-weight:700; margin-left:4px;">${trap.choice || 'ভুল অপশন'}</span>
               </div>
               <div>
@@ -528,40 +528,40 @@ const Notes = {
               </div>
               ${trap.speedSec ? `
                 <div>
-                  <span style="color:var(--text-dim);">ল্যাটেন্সি:</span>
-                  <span style="color:#fff; font-weight:700; margin-left:4px;">${trap.speedSec}s (অতি দ্রুত)</span>
+                  <span style="color:var(--text-dim);">নেওয়া সময়:</span>
+                  <span style="color:#fff; font-weight:700; margin-left:4px;">${trap.speedSec} সেকেন্ড</span>
                 </div>
               ` : ''}
             </div>
 
-            <p style="color:var(--text-muted); font-size:0.86rem; line-height:1.5; margin:6px 0 0 0;">
-              <strong>ফাঁদ মেকানিজম:</strong> ${trap.trap || 'প্রশ্নকর্তার বিভ্রান্তিকর অপশনের ফাঁদে দ্রুত দাগিয়ে ফেলা হয়েছে।'}
+            <p style="color:var(--text-muted); font-size:0.88rem; line-height:1.55; margin:8px 0 0 0;">
+              <strong>কেন ভুল হলো:</strong> ${trap.trap || 'প্রশ্নকর্তার বিভ্রান্তিকর অপশনের ফাঁদে পড়ে ভুল হয়েছে।'}
             </p>
           </div>
         `;
       }).join('');
     } else {
       dangerTrapsHTML = `
-        <div style="background:rgba(34,201,122,0.04); border:1px solid rgba(34,201,122,0.2); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:20px; color:var(--accent-green); font-size:0.88rem;">
-          ✓ চমৎকার! এই অধ্যায়ে কোনো সক্রিয় নেগেটিভ মার্কিং ফাঁদ নেই।
+        <div style="background:rgba(34,201,122,0.04); border:1px solid rgba(34,201,122,0.2); border-radius:var(--radius-sm); padding:16px 20px; color:var(--accent-green); font-size:0.9rem;">
+          ✓ চমৎকার! কোনো তাড়াহুড়োয় করা ভুল বা সক্রিয় নেগেটিভ মার্কিং ফাঁদ নেই।
         </div>
       `;
     }
 
-    // 3. MEMORY MNEMONICS HTML (SECTION 3)
+    // ─── BOX 3: MEMORY MNEMONICS FOR LATENCY > 6S (Pattern 1 & 2) ───
     let memoryTricksHTML = '';
     if (memoryTricks.length > 0) {
       memoryTricksHTML = memoryTricks.map(m => `
         <div class="mnemonic-item-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <strong style="color:#6889FF; font-size:0.92rem;">${m.topic}</strong>
-            ${m.latencySec ? `<span style="font-size:0.75rem; color:var(--text-dim);">${m.latencySec}s ল্যাটেন্সি</span>` : ''}
+            <strong style="color:#6889FF; font-size:0.95rem;">${m.topic}</strong>
+            ${m.latencySec ? `<span style="font-size:0.78rem; color:var(--text-dim);">${m.latencySec} সেকেন্ড সময় লেগেছিল</span>` : ''}
           </div>
-          <p style="color:#fff; font-size:0.88rem; line-height:1.5; margin:4px 0 6px 0;">
+          <p style="color:#fff; font-size:0.92rem; line-height:1.55; margin:4px 0 6px 0;">
             ${m.mnemonic}
           </p>
           ${m.speedTrigger ? `
-            <div style="font-size:0.82rem; color:var(--text-muted);">
+            <div style="font-size:0.84rem; color:var(--text-muted);">
               ${m.speedTrigger}
             </div>
           ` : ''}
@@ -569,39 +569,39 @@ const Notes = {
       `).join('');
     } else {
       memoryTricksHTML = `
-        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:20px; color:var(--text-muted); font-size:0.88rem;">
-          স্মৃতি মন্থরতার কোনো রেকর্ড নেই। সকল প্রশ্নের তথ্য ৬ সেকেন্ডের মধ্যে সফলভাবে রিকল হয়েছে।
+        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:16px 20px; color:var(--text-muted); font-size:0.9rem;">
+          ✓ দারুণ! স্মৃতি মন্থরতার কোনো রেকর্ড নেই। সকল প্রশ্নের তথ্য ৬ সেকেন্ডের মধ্যে সফলভাবে মনে পড়েছে।
         </div>
       `;
     }
 
-    // 4. UNCHARTED PRIMERS HTML (SECTION 4)
+    // ─── BOX 4: SKIPPED QUESTIONS STUDY GUIDE (Pattern 7 & 6) ───
     let primersHTML = '';
     if (unchartedPrimers.length > 0) {
       primersHTML = unchartedPrimers.map(u => `
         <div class="primer-item-card">
-          <strong style="color:var(--accent-amber); font-size:0.92rem; display:block; margin-bottom:4px;">
-            ${u.topic || 'অস্পর্শিত টপিক'}
+          <strong style="color:var(--accent-amber); font-size:0.95rem; display:block; margin-bottom:4px;">
+            ${u.topic || 'বাদ দেওয়া টপিক'}
           </strong>
-          <p style="color:#fff; font-size:0.88rem; line-height:1.5; margin:0 0 6px 0;">
+          <p style="color:#fff; font-size:0.92rem; line-height:1.55; margin:0 0 6px 0;">
             ${u.primerText}
           </p>
           ${u.keyFacts ? `
-            <div style="font-size:0.82rem; color:var(--text-muted);">
-              <strong>মাস্ট-নো ফ্যাক্ট:</strong> ${u.keyFacts}
+            <div style="font-size:0.84rem; color:var(--text-muted); line-height:1.5;">
+              <strong>ভর্তি তথ্য:</strong> ${u.keyFacts}
             </div>
           ` : ''}
         </div>
       `).join('');
     } else {
       primersHTML = `
-        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:20px; color:var(--text-muted); font-size:0.88rem;">
-          এই অধ্যায়ে কোনো প্রশ্ন এড়িয়ে যাওয়া হয়নি (Zero Unattempted Topics)।
+        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:16px 20px; color:var(--text-muted); font-size:0.9rem;">
+          ✓ দুর্দান্ত! কোনো প্রশ্ন না দাগিয়ে ছেড়ে দেওয়া হয়নি (Zero Skipped Questions)।
         </div>
       `;
     }
 
-    // 5. MASTERED CONCEPTS HTML (SECTION 5)
+    // ─── BOX 5: MASTERED CONCEPTS & RESOLVED MISTAKES (Pattern 0) ───
     let masteredHTML = '';
     if (masteredConcepts.length > 0) {
       masteredHTML = `
@@ -612,13 +612,13 @@ const Notes = {
                 <span style="color:var(--accent-green); font-size:1.1rem;">✓</span>
                 <span style="font-weight:700; color:#fff;">${mc.topic}</span>
                 ${mc.resolvedFrom ? `
-                  <span style="background:rgba(34,201,122,0.2); color:var(--accent-green); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:8px;">
-                    ${mc.resolvedFrom} সমাধানকৃত
+                  <span style="background:rgba(34,201,122,0.2); color:var(--accent-green); font-size:0.75rem; font-weight:800; padding:2px 8px; border-radius:8px;">
+                    ${mc.resolvedFrom} সমাধানকৃত ✅
                   </span>
                 ` : ''}
               </div>
-              <div style="font-size:0.8rem; color:var(--text-muted);">
-                ${mc.resolutionNote || '৬ সে.-এর মধ্যে নির্ভুল উত্তর'}
+              <div style="font-size:0.82rem; color:var(--text-muted);">
+                ${mc.resolutionNote || '৬ সেকেন্ডের মধ্যে কোনো দ্বিধা ছাড়া শতভাগ নির্ভুল উত্তর'}
               </div>
             </div>
           `).join('')}
@@ -626,23 +626,23 @@ const Notes = {
       `;
     } else {
       masteredHTML = `
-        <div style="color:var(--text-dim); font-size:0.86rem; padding:8px 0;">
-          রিটেক পরীক্ষা সম্পন্ন করে আরও কনসেপ্ট আয়ত্ত তালিকায় যুক্ত করুন।
+        <div style="color:var(--text-dim); font-size:0.88rem; padding:8px 0;">
+          রিটেক পরীক্ষা সম্পন্ন করে আরও বিষয় আয়ত্ত তালিকায় যুক্ত করুন।
         </div>
       `;
     }
 
     return `
-      <article class="chapter-document-sheet" id="chapterDoc-${doc.chapterId || doc.id}">
+      <article class="chapter-document-sheet" id="chapterDoc-${doc.chapterId || doc.id || 'session'}">
         <!-- Document Sheet Header -->
         <div class="doc-sheet-header">
           <div class="doc-header-top-row">
             <div>
-              <span class="doc-paper-tag">${paperName} · Chapter ${doc.chapterNo || ''}</span>
+              <span class="doc-paper-tag">${paperName}</span>
               <h2 class="doc-chapter-title">${chapterTitle}</h2>
               <div class="doc-badges-row">
-                <span class="doc-version-pill">Living Document v${version}.0</span>
-                <span class="doc-exams-count-pill">🔄 ${examsCount} Exam${examsCount > 1 ? 's' : ''} Taken on this Chapter</span>
+                <span class="doc-version-pill">স্মার্ট স্টাডি নোট v${version}.0</span>
+                <span class="doc-exams-count-pill">🔄 ${examsCount}টি পরীক্ষা সম্পন্ন</span>
               </div>
             </div>
 
@@ -654,78 +654,78 @@ const Notes = {
                 </button>
               ` : ''}
               <button class="btn-secondary" style="padding:10px 18px; font-size:0.88rem;" onclick="Notes.printChapterDocument(${doc.chapterId || 0})">
-                🖨️ নোট ডাউনলোড / প্রিন্ট করুন (PDF)
+                🖨️ প্রিন্ট / PDF ডাউনলোড
               </button>
             </div>
           </div>
 
           <!-- Mastery Bar -->
           <div class="doc-mastery-bar-wrap">
-            <span style="font-size:0.82rem; color:var(--text-muted); font-weight:700; min-width:120px;">
-              Cognitive Mastery:
+            <span style="font-size:0.84rem; color:var(--text-muted); font-weight:700; min-width:120px;">
+              প্রস্তুতি ও একুরেসি:
             </span>
             <div class="doc-mastery-track">
               <div class="doc-mastery-fill" style="width:${masteryPercent}%;"></div>
             </div>
-            <span style="font-size:0.92rem; font-weight:800; color:${masteryPercent >= 75 ? 'var(--accent-green)' : 'var(--accent-amber)'}; min-width:48px; text-align:right;">
+            <span style="font-size:0.92rem; font-weight:800; color:${masteryPercent >= 70 ? 'var(--accent-green)' : 'var(--accent-amber)'}; min-width:48px; text-align:right;">
               ${masteryPercent}%
             </span>
           </div>
         </div>
 
-        <!-- Section 1: Option Hesitation Table -->
+        <!-- Box 1: Option Confusion Table -->
         <section style="margin-bottom:28px;">
           <h3 class="doc-section-header">
             <span>🔀</span>
-            <span>দ্বিধাগ্রস্ত অপশন ও মুখোমুখি পার্থক্যের ছক (Option Hesitation & Distractor Matrix)</span>
+            <span>১. অপশন পরিবর্তন ও দ্বিধাদ্বন্দ্ব দূর করার ছক (Option Confusion Comparison Matrix)</span>
           </h3>
-          <p style="color:var(--text-muted); font-size:0.86rem; margin-top:-6px; margin-bottom:12px;">
-            যেসব প্রশ্নে অপশন পরিবর্তন (Pattern 3 & 4) করে বিভ্রান্তিতে পড়েছিলেন, তাদের মুখোমুখি তফাত:
+          <p style="color:var(--text-muted); font-size:0.88rem; margin-top:-6px; margin-bottom:12px; line-height:1.5;">
+            যেসব প্রশ্নে অপশন একাধিকবার পরিবর্তন করে দ্বিধায় পড়েছিলেন, তাদের মুখোমুখি তফাত ও মনে রাখার নিশ্চিত কৌশল:
           </p>
           ${compTableHTML}
         </section>
 
-        <!-- Section 2: False Confidence & Repeat Traps -->
+        <!-- Box 2: Fast Careless Mistakes & Repeat Danger Traps -->
         <section style="margin-bottom:28px;">
           <h3 class="doc-section-header danger-header">
             <span>⚠️</span>
-            <span>ভুল আত্মবিশ্বাস ও নেগেティブ মার্কিং ফাঁদ (False Confidence & Repeat Danger Traps)</span>
+            <span>২. তাড়াহুড়োয় ভুল ও নেগেটিভ মার্কিং ফাঁদ (Fast Careless Mistakes & Traps)</span>
           </h3>
-          <p style="color:var(--text-muted); font-size:0.86rem; margin-top:-6px; margin-bottom:12px;">
-            দ্রুত ভুল করা প্রশ্ন এবং পুনরাবৃত্তিমূলক ফাঁদসমূহ (Pattern 5 & Repeated Errors):
+          <p style="color:var(--text-muted); font-size:0.88rem; margin-top:-6px; margin-bottom:12px; line-height:1.5;">
+            দ্রুত সিদ্ধান্ত নিয়ে ভুল করা প্রশ্ন এবং পুনরাবৃত্তিমূলক নেগেটিভ মার্কিং ফাঁদসমূহ (-০.২৫ ঝুঁকি):
           </p>
           ${dangerTrapsHTML}
         </section>
 
-        <!-- Section 3: Memory Mnemonics -->
+        <!-- Box 3: Memory Mnemonics -->
         <section style="margin-bottom:28px;">
           <h3 class="doc-section-header mnemonic-header">
             <span>⏱️</span>
-            <span>স্মৃতি মন্থর ও দ্রুত রিকলের ছন্দ (Memory Mnemonics for Latency &gt; 6s)</span>
+            <span>৩. স্মৃতি মন্থরতা ও দ্রুত মনে রাখার সহজ ছন্দ (Memory Mnemonics for Latency > 6s)</span>
           </h3>
-          <p style="color:var(--text-muted); font-size:0.86rem; margin-top:-6px; margin-bottom:12px;">
-            তথ্য রিকল করতে দেরি হওয়া প্রশ্নগুলোর জন্য ৩-সেকেন্ড ইনস্ট্যান্ট স্পিড হুক:
+          <p style="color:var(--text-muted); font-size:0.88rem; margin-top:-6px; margin-bottom:12px; line-height:1.5;">
+            যেসব প্রশ্নের উত্তর মনে করতে ৬ সেকেন্ডের বেশি সময় লেগেছে, সেগুলোর ৫-সেকেন্ড ইনস্ট্যান্ট রিকল কৌশল:
           </p>
           ${memoryTricksHTML}
         </section>
 
-        <!-- Section 4: Primers -->
+        <!-- Box 4: Skipped Questions Primer -->
         <section style="margin-bottom:28px;">
           <h3 class="doc-section-header primer-header">
             <span>📖</span>
-            <span>অপঠিত / অস্পর্শিত বিষয়ের হাই-ইয়েল্ড প্রাইমার (High-Yield Admission Primer)</span>
+            <span>৪. না দাগিয়ে ছেড়ে দেওয়া প্রশ্নের সারসংক্ষেপ (Skipped Topics Study Guide)</span>
           </h3>
-          <p style="color:var(--text-muted); font-size:0.86rem; margin-top:-6px; margin-bottom:12px;">
-            যেসব প্রশ্ন পরীক্ষায় স্পর্শ না করে ছেড়ে গেছেন, সেগুলোর আবশ্যকীয় ভর্তি তথ্য:
+          <p style="color:var(--text-muted); font-size:0.88rem; margin-top:-6px; margin-bottom:12px; line-height:1.5;">
+            যেসব প্রশ্ন স্পর্শ না করে ছেড়ে গেছেন, সেগুলোর আবশ্যকীয় ভর্তি তথ্য:
           </p>
           ${primersHTML}
         </section>
 
-        <!-- Section 5: Mastered Concepts -->
+        <!-- Box 5: Mastered & Resolved Concepts -->
         <section style="margin-bottom:16px;">
           <h3 class="doc-section-header mastered-header">
             <span>⚡</span>
-            <span>আয়ত্তকৃত বিষয়সমূহ (Mastered & Resolved Concepts)</span>
+            <span>৫. শতভাগ আয়ত্তকৃত বিষয় ও সমাধানকৃত ভুল (Mastered & Resolved Concepts)</span>
           </h3>
           ${masteredHTML}
         </section>
@@ -739,13 +739,13 @@ const Notes = {
     if (!docOrNotes) {
       container.innerHTML = `
         <div style="background:var(--bg-subtle); border-radius:var(--radius-sm); padding:20px; text-align:center; color:var(--text-muted);">
-          All questions were answered with high accuracy and instant recall! Zero cognitive friction detected.
+          সকল প্রশ্নের উত্তর শতভাগ নির্ভুলভাবে দেওয়া হয়েছে!
         </div>
       `;
       return;
     }
 
-    // If passed a chapterLivingNote object
+    // If passed a chapterLivingNote or sessionNotes object
     if (docOrNotes.comparisonTable || docOrNotes.dangerTraps || docOrNotes.titleBn) {
       container.innerHTML = this.renderChapterDocument(docOrNotes);
       return;
@@ -761,7 +761,7 @@ const Notes = {
 
     container.innerHTML = `
       <div style="background:var(--bg-subtle); border-radius:var(--radius-sm); padding:20px; text-align:center; color:var(--text-muted);">
-        Your chapter study notes have been updated and synced to the Living Study Notes library!
+        আপনার পরীক্ষার স্টাডি নোট সংরক্ষিত হয়েছে!
       </div>
     `;
   },

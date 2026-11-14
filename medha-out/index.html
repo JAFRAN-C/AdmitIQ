@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AdmitIQ — Medical Admission Cognitive Intelligence Platform</title>
+  <title>AdmitIQ — মেডিকেল ভর্তি প্রস্তুতি ও স্মার্ট স্টাডি প্ল্যাটফর্ম</title>
 
   <!-- Google Fonts: Plus Jakarta Sans (UI) & Hind Siliguri (Bangla) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,26 +22,26 @@
       <div style="font-size:1.6rem;">🩺</div>
       <div>
         <span class="brand-logo-text">Admit<span class="brand-dot">IQ</span></span>
-        <span class="brand-sub-badge">MAT 2026</span>
+        <span class="brand-sub-badge">মেডিকেল ভর্তি ২০২৬</span>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
     <nav class="nav-links-row" id="navTabs">
-      <button class="nav-tab-btn active" data-screen="dashboard">🏠 Home</button>
-      <button class="nav-tab-btn" data-screen="chapters">📚 Chapters & Syllabus</button>
-      <button class="nav-tab-btn" data-screen="notes">🧬 Living Study Notes</button>
-      <button class="nav-tab-btn" data-screen="dna">📊 Cognitive DNA</button>
-      <button class="nav-tab-btn" data-screen="profile">👤 Profile & History</button>
+      <button class="nav-tab-btn active" data-screen="dashboard">🏠 হোম (Home)</button>
+      <button class="nav-tab-btn" data-screen="chapters">📚 অধ্যায় ও পরীক্ষা (Chapters)</button>
+      <button class="nav-tab-btn" data-screen="notes">📝 স্টাডি নোট (Study Notes)</button>
+      <button class="nav-tab-btn" data-screen="dna">📊 দুর্বলতা ও অগ্রগতি (Progress)</button>
+      <button class="nav-tab-btn" data-screen="profile">👤 প্রোফাইল (Profile)</button>
     </nav>
 
     <!-- User / Auth Actions -->
     <div class="nav-right-actions">
       <button class="btn-login-pill" onclick="App.openLoginModal()">
-        Login / Switch 🔑
+        লগইন / প্রোফাইল 🔑
       </button>
 
-      <div class="user-profile-badge" onclick="App.showScreen('profile')" title="View Aspirant Profile & History">
+      <div class="user-profile-badge" onclick="App.showScreen('profile')" title="প্রোফাইল ও পরীক্ষার ইতিহাস">
         <div class="upb-avatar user-avatar-letter">S</div>
         <div class="upb-name user-display-name">Sreya</div>
       </div>
@@ -59,42 +59,42 @@
     <section class="screen-view active" id="screen-dashboard">
       <!-- Welcome Hero Banner -->
       <div class="dash-hero-card">
-        <div class="dhc-tag">Medical Admission Intelligence · HSC Biology</div>
-        <h1 class="dhc-title">Welcome back, <span class="user-display-name">Sreya</span>! 🩺</h1>
+        <div class="dhc-tag">মেডিকেল ভর্তি প্রস্তুতি (MAT) · HSC জীববিজ্ঞান ১ম ও ২য় পত্র</div>
+        <h1 class="dhc-title">স্বাগতম, <span class="user-display-name">Sreya</span>! 🩺</h1>
         <p class="dhc-sub">
-          AdmitIQ analyzes how your brain responds under medical exam pressure — detecting hesitation (>6s), option switches, and panic skips to synthesize living lecture notes that upgrade every time you practice.
+          মেডিকেল ভর্তি পরীক্ষার প্রস্তুতিকে নির্ভুল ও নিখুঁত করতে প্রতিটি অধ্যায়ের এমসিকিউ অনুশীলন করুন। প্রতিটি পরীক্ষার পর আপনার ভুল, দ্বিধাগ্রস্ত অপশন ও সময় বিশ্লেষণ করে ৫টি ক্যাটাগরিতে সাজানো স্টাডি নোট তৈরি হবে—যাতে একই ভুল ভর্তি পরীক্ষায় আর না হয়।
         </p>
         <div class="dhc-actions">
           <button class="btn-primary" onclick="App.startStandardExam(10)">
-            ⚡ Take 10-MCQ Diagnostic Exam
+            ⚡ ১০টি এমসিকিউ মডেল টেস্ট দিন
           </button>
           <button class="btn-secondary" onclick="App.showScreen('chapters')">
-            📚 Browse All 18 Biology Chapters →
+            📚 সকল অধ্যায় দেখুন →
           </button>
         </div>
       </div>
 
-      <!-- 4 Cognitive Stats Overview -->
+      <!-- 4 Student Study Stats -->
       <div class="stats-cards-row">
         <div class="stat-card-item">
-          <div class="sci-lbl">Cognitive Threshold</div>
-          <div class="sci-val">6.0s</div>
-          <div class="sci-sub">Boundary separating instant recall from exam memory fade</div>
+          <div class="sci-lbl">📝 মোট পরীক্ষা সম্পন্ন</div>
+          <div class="sci-val" id="dashTotalExams">০টি পরীক্ষা</div>
+          <div class="sci-sub">মডেল টেস্ট ও অধ্যায়ভিত্তিক অনুশীলন</div>
         </div>
         <div class="stat-card-item">
-          <div class="sci-lbl">Cognitive Mapping</div>
-          <div class="sci-val">7 Patterns</div>
-          <div class="sci-sub">Tracks distractor traps, hesitation, and panic blanks</div>
+          <div class="sci-lbl">🎯 সামগ্রিক সঠিকতার হার</div>
+          <div class="sci-val" id="dashOverallAcc">০%</div>
+          <div class="sci-sub">সকল প্রশ্নের গড় নির্ভুলতা</div>
         </div>
         <div class="stat-card-item">
-          <div class="sci-lbl">Chapters Tested</div>
-          <div class="sci-val" id="dashChaptersTestedCount">1 / 18</div>
-          <div class="sci-sub">Coverage across HSC 1st & 2nd Paper</div>
+          <div class="sci-lbl">⏱️ গড় উত্তর গতি</div>
+          <div class="sci-val" id="dashAvgSpeed">০.০s</div>
+          <div class="sci-sub">মেডিকেল পরীক্ষার আদর্শ গতি: ≤ ৫.০ সেকেন্ড</div>
         </div>
         <div class="stat-card-item">
-          <div class="sci-lbl">Living Study Notes</div>
-          <div class="sci-val">Adaptive</div>
-          <div class="sci-sub">Lecture notes evolve and eliminate repeat mistakes</div>
+          <div class="sci-lbl">📚 অধ্যায় কভারেজ</div>
+          <div class="sci-val" id="dashChaptersTestedCount">০ / ১৮</div>
+          <div class="sci-sub">১ম ও ২য় পত্রের অনুশীলনকৃত অধ্যায়</div>
         </div>
       </div>
 
@@ -102,24 +102,24 @@
       <section class="syllabus-hub-section">
         <div class="shs-header">
           <div>
-            <h2 class="shs-title">HSC Biology Syllabus Hub (18 Chapters) 🧬</h2>
-            <p class="shs-subtitle">Practice high-yield Medical Admission MCQs and review living study notes by chapter:</p>
+            <h2 class="shs-title">এইচএসসি জীববিজ্ঞান সিলেবাস ও অধ্যায়ভিত্তিক অনুশীলন 📚</h2>
+            <p class="shs-subtitle">উদ্ভিদবিজ্ঞান ও প্রাণিবিজ্ঞানের ১৮টি অধ্যায়ের গুরুত্বপূর্ণ ভর্তি প্রশ্ন ও স্টাডি নোট:</p>
           </div>
 
           <!-- Paper Switcher Tabs -->
           <div class="paper-nav-tabs">
             <button class="paper-tab-btn active" id="homeTabBotany" onclick="App.switchHomePaper('1st_paper')">
-              🌿 Paper 1: Botany (১ম পত্র — ৯টি অধ্যায়)
+              🌿 ১ম পত্র: উদ্ভিদবিজ্ঞান (৯টি অধ্যায়)
             </button>
             <button class="paper-tab-btn" id="homeTabZoology" onclick="App.switchHomePaper('2nd_paper')">
-              🔬 Paper 2: Zoology (২য় পত্র — ৯টি অধ্যায়)
+              🔬 ২য় পত্র: প্রাণিবিজ্ঞান (৯টি অধ্যায়)
             </button>
           </div>
         </div>
 
         <!-- Search Bar -->
         <div style="margin-bottom:20px; display:flex; gap:12px; align-items:center;">
-          <input type="text" id="homeChapterSearchInput" placeholder="🔍 Search chapter name or topic (e.g. কোষ, পরিপাক, রক্ত, জিনতত্ত্ব)..." 
+          <input type="text" id="homeChapterSearchInput" placeholder="🔍 অধ্যায় বা টপিকের নাম লিখুন (যেমন: কোষ, পরিপাক, রক্ত, জিনতত্ত্ব)..." 
                  style="flex:1; background:rgba(0,0,0,0.3); border:1px solid var(--border-light); border-radius:var(--radius-pill); padding:10px 20px; color:#fff; font-size:0.9rem;"
                  oninput="App.filterHomeChapters(this.value)">
         </div>
@@ -138,22 +138,22 @@
       <div class="syllabus-hub-section" style="margin-bottom:0;">
         <div class="shs-header">
           <div>
-            <h2 class="shs-title">All HSC Biology Chapters & Practice Center 📚</h2>
-            <p class="shs-subtitle">Select any chapter to practice targeted MCQs or study its living document:</p>
+            <h2 class="shs-title">সকল অধ্যায়ের তালিকা ও পরীক্ষা কেন্দ্র 📚</h2>
+            <p class="shs-subtitle">যে অধ্যায়টি অনুশীলন করতে চান, সেটি নির্বাচন করে পরীক্ষা শুরু করুন বা রিভিশন নোট পড়ুন:</p>
           </div>
 
           <div class="paper-nav-tabs">
             <button class="paper-tab-btn active" id="allTabBotany" onclick="App.switchAllChaptersPaper('1st_paper')">
-              🌿 Botany (১ম পত্র)
+              🌿 ১ম পত্র: উদ্ভিদবিজ্ঞান
             </button>
             <button class="paper-tab-btn" id="allTabZoology" onclick="App.switchAllChaptersPaper('2nd_paper')">
-              🔬 Zoology (২য় পত্র)
+              🔬 ২য় পত্র: প্রাণিবিজ্ঞান
             </button>
           </div>
         </div>
 
         <div style="margin-bottom:20px;">
-          <input type="text" id="allChapterSearchInput" placeholder="🔍 Search by chapter title in Bangla or English..." 
+          <input type="text" id="allChapterSearchInput" placeholder="🔍 অধ্যায় বা টপিকের নাম খুঁজুন..." 
                  style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-light); border-radius:var(--radius-pill); padding:10px 20px; color:#fff; font-size:0.9rem;"
                  oninput="App.filterAllChapters(this.value)">
         </div>
@@ -173,9 +173,9 @@
         <!-- Exam Header -->
         <div class="exam-header-bar">
           <div class="exam-meta-block">
-            <span class="exam-chapter-name" id="examActiveTitle">Biology Comprehensive Exam</span>
+            <span class="exam-chapter-name" id="examActiveTitle">এইচএসসি জীববিজ্ঞান পরীক্ষা</span>
             <div class="exam-q-counter">
-              Question <span id="examCurrentNum">01</span> of <span id="examTotalCount">10</span>
+              প্রশ্ন <span id="examCurrentNum">01</span> / <span id="examTotalCount">10</span>
             </div>
           </div>
           <div class="exam-timer-pill" id="examTimerPill">
@@ -189,7 +189,7 @@
 
         <!-- Question Stem Box -->
         <div class="question-display-box">
-          <span class="q-topic-tag" id="examTopicTag">General Biology</span>
+          <span class="q-topic-tag" id="examTopicTag">জীববিজ্ঞান</span>
           <h2 class="q-main-text" id="examQuestionText">প্রশ্ন লোড হচ্ছে...</h2>
         </div>
 
@@ -199,15 +199,15 @@
         <!-- Exam Action Footer -->
         <div class="exam-action-footer">
           <button class="btn-secondary" id="btnPrevQuestion" onclick="App.prevQuestion()">
-            ← Previous
+            ← পূর্ববর্তী প্রশ্ন
           </button>
 
           <div style="display:flex; gap:10px;">
             <button class="btn-primary" id="btnNextQuestion" onclick="App.nextQuestion()">
-              Next Question →
+              পরবর্তী প্রশ্ন →
             </button>
             <button class="btn-primary" id="btnSubmitExam" style="display:none; background:var(--accent-green);" onclick="App.finishExam()">
-              Submit Exam ✓
+              পরীক্ষা সমাপ্ত করুন ✓
             </button>
           </div>
         </div>
@@ -216,7 +216,7 @@
     </section>
 
     <!-- ──────────────────────────────────────────────────────────
-         SCREEN 4: EXAM RESULTS & 7-PATTERN REPORT
+         SCREEN 4: EXAM RESULTS & 5-BOX REVISION REPORT
          ────────────────────────────────────────────────────────── -->
     <section class="screen-view" id="screen-results">
       <div class="exam-layout-card">
@@ -224,64 +224,64 @@
         <!-- Score Overview -->
         <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.25); border-radius:var(--radius-md); padding:24px 32px; margin-bottom:28px; flex-wrap:wrap; gap:16px;">
           <div>
-            <h3 style="font-size:2.2rem; font-weight:800; color:#fff; margin-bottom:4px;" id="resScoreNum">8 / 10</h3>
-            <p style="color:var(--text-muted); font-size:0.92rem;">Exam Completed · Telemetry Processed 🎉</p>
+            <h3 style="font-size:2.2rem; font-weight:800; color:#fff; margin-bottom:4px;" id="resScoreNum">৮ / ১০</h3>
+            <p style="color:var(--text-muted); font-size:0.92rem;">পরীক্ষা সম্পন্ন হয়েছে · ফলাফল সংরক্ষিত 🎉</p>
           </div>
           <div style="display:flex; gap:24px;">
             <div>
-              <div style="font-size:0.78rem; color:var(--text-dim); font-weight:700; text-transform:uppercase;">Accuracy</div>
-              <div style="font-size:1.6rem; font-weight:800; color:var(--accent-green);" id="resAccuracyPercent">80%</div>
+              <div style="font-size:0.78rem; color:var(--text-dim); font-weight:700; text-transform:uppercase;">সঠিকতার হার</div>
+              <div style="font-size:1.6rem; font-weight:800; color:var(--accent-green);" id="resAccuracyPercent">৮০%</div>
             </div>
             <div>
-              <div style="font-size:0.78rem; color:var(--text-dim); font-weight:700; text-transform:uppercase;">Avg Speed</div>
-              <div style="font-size:1.6rem; font-weight:800; color:#fff;" id="resAvgTimeTaken">4.8s</div>
+              <div style="font-size:0.78rem; color:var(--text-dim); font-weight:700; text-transform:uppercase;">গড় গতি</div>
+              <div style="font-size:1.6rem; font-weight:800; color:#fff;" id="resAvgTimeTaken">৪.২s</div>
             </div>
             <div>
-              <div style="font-size:0.78rem; color:var(--text-dim); font-weight:700; text-transform:uppercase;">Total MCQs</div>
-              <div style="font-size:1.6rem; font-weight:800; color:#fff;" id="resTotalQNum">10</div>
+              <div style="font-size:0.78rem; color:var(--text-dim); font-weight:700; text-transform:uppercase;">মোট প্রশ্ন</div>
+              <div style="font-size:1.6rem; font-weight:800; color:#fff;" id="resTotalQNum">১০</div>
             </div>
           </div>
         </div>
 
-        <!-- Dominant Behavioral Diagnosis -->
+        <!-- Primary Weakness / Habit Observation -->
         <div style="background:rgba(99,102,241,0.08); border-left:4px solid var(--accent-purple); border-radius:var(--radius-sm); padding:16px 20px; margin-bottom:24px;">
           <div style="font-size:0.76rem; text-transform:uppercase; color:var(--accent-purple); font-weight:800; letter-spacing:0.5px; margin-bottom:4px;">
-            Dominant Cognitive Diagnosis
+            প্রধান পর্যবেক্ষণ ও দুর্বলতা
           </div>
-          <div style="font-size:1.15rem; font-weight:800; color:#fff;" id="resDominantPatternName">Analyzing...</div>
+          <div style="font-size:1.15rem; font-weight:800; color:#fff;" id="resDominantPatternName">বিশ্লেষণ করা হচ্ছে...</div>
           <div style="color:var(--text-muted); font-size:0.88rem; margin-top:4px;" id="resDominantPatternDesc"></div>
         </div>
 
-        <!-- 7-Pattern Breakdown -->
+        <!-- Mistake Categories Breakdown -->
         <div style="margin-bottom:28px;">
-          <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:12px;">7-Pattern Cognitive Breakdown</h3>
+          <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:12px;">ভুলের ধরন ও প্রশ্নের বিশ্লেষণ</h3>
           <div id="dnaBreakdownSlot"></div>
         </div>
 
         <!-- Question Telemetry Breakdown -->
         <div style="margin-bottom:32px;">
-          <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:12px;">Question Telemetry Analysis</h3>
+          <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:12px;">প্রশ্নভিত্তিক বিস্তারিত সমাধান ও ব্যাখ্যা</h3>
           <div id="examQuestionsBreakdownSlot"></div>
         </div>
 
-        <!-- AI Living Notes Generated for this Exam -->
+        <!-- 5-Box Structured Living Notes Generated for this Exam -->
         <div style="border-top:1px solid var(--border-light); padding-top:28px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
             <h3 style="font-size:1.25rem; font-weight:800; color:#fff; margin:0;">
-              Living Study Document (Updated from this Session) 🧬
+              পরীক্ষা পরবর্তী স্মার্ট রিভিশন নোট (৫টি ক্যাটাগরি) 📝
             </h3>
-            <span id="examSessionNotesStatus" style="font-size:0.82rem; color:var(--accent-purple); font-weight:700;"></span>
+            <span id="examSessionNotesStatus" style="font-size:0.84rem; color:var(--accent-purple); font-weight:700;"></span>
           </div>
           <div id="examSessionNotesContainer"></div>
         </div>
 
         <!-- Actions -->
-        <div style="display:flex; gap:12px; margin-top:28px;">
+        <div style="display:flex; gap:12px; margin-top:28px; flex-wrap:wrap;">
           <button class="btn-primary" onclick="App.showScreen('notes')">
-            Open Full Notes Library 📚
+            পূর্ণাঙ্গ নোটস লাইব্রেরি দেখুন 📝
           </button>
           <button class="btn-secondary" onclick="App.showScreen('chapters')">
-            Practice Another Chapter →
+            অন্য অধ্যায় অনুশীলন করুন →
           </button>
         </div>
 
@@ -294,9 +294,9 @@
     <section class="screen-view" id="screen-notes">
       <div class="shs-header" style="margin-bottom:20px;">
         <div>
-          <h2 class="shs-title">Living Study Notes Hub 🧬</h2>
+          <h2 class="shs-title">স্মার্ট স্টাডি নোট ও রিভিশন কেন্দ্র 📝</h2>
           <p class="shs-subtitle">
-            Consolidated lecture sheets with comparison tables, negative marking danger alerts, and mnemonics:
+            ভুলের ধরন ও দ্বিধাগ্রস্ত অপশন অনুযায়ী ৫টি ক্যাটাগরিতে সাজানো সমন্বিত লেকচার শিট:
           </p>
         </div>
       </div>
@@ -304,13 +304,13 @@
       <!-- Top Paper Switcher Tabs -->
       <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
         <button class="btn-filter-pill active" id="notesPaperAll" onclick="Notes.setPaperFilter('all')">
-          All Papers 📚
+          সকল পত্র 📚
         </button>
         <button class="btn-filter-pill" id="notesPaperBotany" onclick="Notes.setPaperFilter('1st_paper')">
-          🌿 Biology 1st Paper (Botany)
+          🌿 ১ম পত্র: উদ্ভিদবিজ্ঞান
         </button>
         <button class="btn-filter-pill" id="notesPaperZoology" onclick="Notes.setPaperFilter('2nd_paper')">
-          🔬 Biology 2nd Paper (Zoology)
+          🔬 ২য় পত্র: প্রাণিবিজ্ঞান
         </button>
       </div>
 
@@ -324,14 +324,14 @@
     </section>
 
     <!-- ──────────────────────────────────────────────────────────
-         SCREEN 6: COGNITIVE DNA MATRIX
+         SCREEN 6: WEAKNESS & PROGRESS MATRIX
          ────────────────────────────────────────────────────────── -->
     <section class="screen-view" id="screen-dna">
       <div class="shs-header" style="margin-bottom:20px;">
         <div>
-          <h2 class="shs-title">Chapter-Wise Cognitive DNA Report 🧬</h2>
+          <h2 class="shs-title">অধ্যায়ভিত্তিক দুর্বলতা ও পরীক্ষার অগ্রগতি 📊</h2>
           <p class="shs-subtitle">
-            Track your cognitive hesitation, distractor traps, and mastery across every HSC Biology chapter:
+            কোন কোন অধ্যায়ে অপশন পরিবর্তন করে ভুল করেছেন বা স্মৃতি মন্থরতা রয়েছে, তা সরাসরি পর্যবেক্ষণ করুন:
           </p>
         </div>
       </div>
@@ -352,19 +352,19 @@
           <div>
             <div style="display:flex; align-items:center; gap:10px;">
               <h2 style="font-size:1.45rem; font-weight:800; color:#fff; margin:0;" class="user-display-name">Sreya</h2>
-              <span style="background:rgba(16,185,129,0.15); color:var(--accent-green); border:1px solid rgba(16,185,129,0.3); font-size:0.75rem; font-weight:800; padding:2px 8px; border-radius:10px;">Active Aspirant</span>
+              <span style="background:rgba(16,185,129,0.15); color:var(--accent-green); border:1px solid rgba(16,185,129,0.3); font-size:0.75rem; font-weight:800; padding:2px 8px; border-radius:10px;">পরীক্ষার্থী</span>
             </div>
             <p style="color:var(--text-muted); font-size:0.9rem; margin:4px 0 0 0;" id="userProfileTargetExam">
-              Target: Medical Admission Test 2026 · Dhaka Medical College (DMC)
+              লক্ষ্য: মেডিকেল ভর্তি পরীক্ষা ২০২৬ · ঢাকা মেডিকেল কলেজ (DMC)
             </p>
           </div>
         </div>
         <div style="display:flex; gap:10px;">
           <button class="btn-secondary" onclick="App.openLoginModal()">
-            Edit Profile ✏️
+            প্রোফাইল পরিবর্তন ✏️
           </button>
           <button class="btn-primary" onclick="App.showScreen('chapters')">
-            Practice Biology Chapter 🎯
+            অধ্যায় পরীক্ষা দিন 🎯
           </button>
         </div>
       </div>
@@ -372,36 +372,36 @@
       <!-- Cumulative 4 Metrics -->
       <div class="stats-cards-row">
         <div class="stat-card-item">
-          <div class="sci-lbl">Total Exams Taken</div>
+          <div class="sci-lbl">📝 মোট পরীক্ষা সম্পন্ন</div>
           <div class="sci-val" id="profTotalExams">0</div>
-          <div class="sci-sub">Diagnostic & Chapter-wise sessions</div>
+          <div class="sci-sub">মডেল টেস্ট ও অধ্যায়ভিত্তিক সেশন</div>
         </div>
         <div class="stat-card-item">
-          <div class="sci-lbl">Chapters Tested</div>
+          <div class="sci-lbl">📚 অধ্যায় কভারেজ</div>
           <div class="sci-val" id="profChaptersTested">0 / 18</div>
-          <div class="sci-sub">Coverage across HSC 1st & 2nd Paper</div>
+          <div class="sci-sub">১ম ও ২য় পত্রের অনুশীলনকৃত অধ্যায়</div>
         </div>
         <div class="stat-card-item">
-          <div class="sci-lbl">Overall Accuracy</div>
+          <div class="sci-lbl">🎯 সামগ্রিক সঠিকতার হার</div>
           <div class="sci-val" id="profOverallAccuracy">0%</div>
-          <div class="sci-sub">Cumulative success rate across all MCQs</div>
+          <div class="sci-sub">সকল প্রশ্নের গড় নির্ভুলতা</div>
         </div>
         <div class="stat-card-item">
-          <div class="sci-lbl">Avg Recall Speed</div>
+          <div class="sci-lbl">⏱️ গড় উত্তর গতি</div>
           <div class="sci-val" id="profAvgSpeed">0.0s</div>
-          <div class="sci-sub">Target threshold: &le; 6.0s for admission</div>
+          <div class="sci-sub">আদর্শ লক্ষ্য: ≤ ৫.০ সেকেন্ড</div>
         </div>
       </div>
 
       <!-- Chapter Progress Table -->
       <div style="background:var(--bg-card); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:24px 28px; margin-bottom:28px;">
-        <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:14px;">Chapter Living Study Notes & Evolution Status 🧬</h3>
+        <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:14px;">অধ্যায়ভিত্তিক স্টাডি নোট ও প্রস্তুতির অগ্রগতি 📝</h3>
         <div id="profChapterProgressContainer" style="overflow-x:auto;"></div>
       </div>
 
       <!-- Past Exam History Table -->
       <div style="background:var(--bg-card); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:24px 28px;">
-        <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:14px;">Complete Exam Session History 📜</h3>
+        <h3 style="font-size:1.15rem; font-weight:800; color:#fff; margin-bottom:14px;">পূর্ববর্তী সকল পরীক্ষার ইতিহাস 📜</h3>
         <div id="profExamHistoryContainer" style="overflow-x:auto;"></div>
       </div>
     </section>
@@ -417,25 +417,25 @@
 
       <div style="text-align:center; margin-bottom:24px;">
         <div style="font-size:2.4rem; margin-bottom:8px;">🩺</div>
-        <h2 style="font-size:1.4rem; font-weight:800; color:#fff; margin-bottom:4px;">Aspirant Profile & Login</h2>
-        <p style="color:var(--text-muted); font-size:0.88rem;">Personalize your medical admission journey & telemetry tracking:</p>
+        <h2 style="font-size:1.4rem; font-weight:800; color:#fff; margin-bottom:4px;">পরীক্ষার্থী প্রোফাইল ও লগইন</h2>
+        <p style="color:var(--text-muted); font-size:0.88rem;">আপনার মেডিকেল ভর্তি পরীক্ষার লক্ষ্য ও তথ্য আপডেট করুন:</p>
       </div>
 
       <form onsubmit="App.handleLoginSubmit(event)" style="display:flex; flex-direction:column; gap:16px;">
         <div>
-          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">Your Name:</label>
-          <input type="text" id="loginInputName" required placeholder="e.g. Sreya / Dr. Tanvir" 
+          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">আপনার নাম:</label>
+          <input type="text" id="loginInputName" required placeholder="যেমন: শ্রেয়া / তানভীর" 
                  style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:10px 14px; color:#fff; font-size:0.95rem;">
         </div>
 
         <div>
-          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">Email Address:</label>
-          <input type="email" id="loginInputEmail" placeholder="e.g. student@admitiq.edu.bd" 
+          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">ইমেইল এড্রেস:</label>
+          <input type="email" id="loginInputEmail" placeholder="যেমন: student@admitiq.edu.bd" 
                  style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:10px 14px; color:#fff; font-size:0.95rem;">
         </div>
 
         <div>
-          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">Target Medical College:</label>
+          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">টার্গেট মেডিকেল কলেজ:</label>
           <select id="loginInputCollege" style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:10px 14px; color:#fff; font-size:0.9rem;">
             <option value="Dhaka Medical College (DMC)">Dhaka Medical College (DMC)</option>
             <option value="Sir Salimullah Medical College (SSMC)">Sir Salimullah Medical College (SSMC)</option>
@@ -448,19 +448,19 @@
         </div>
 
         <div>
-          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">HSC Batch:</label>
+          <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">এইচএসসি ব্যাচ:</label>
           <select id="loginInputBatch" style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-light); border-radius:var(--radius-sm); padding:10px 14px; color:#fff; font-size:0.9rem;">
-            <option value="HSC 2026">HSC 2026 (First Timer)</option>
-            <option value="HSC 2025">HSC 2025 (Second Timer)</option>
+            <option value="HSC 2026">HSC 2026 (ফার্স্ট টাইমার)</option>
+            <option value="HSC 2025">HSC 2025 (সেকেন্ড টাইমার)</option>
           </select>
         </div>
 
         <button type="submit" class="btn-primary" style="margin-top:8px; width:100%; padding:12px;">
-          Save Profile & Continue 🚀
+          প্রোফাইল সংরক্ষণ করুন 🚀
         </button>
 
         <button type="button" class="btn-secondary" style="width:100%;" onclick="App.loginAsDemo()">
-          ⚡ Quick Demo Login (Sreya · DMC Aspirant)
+          ⚡ ডেমো লগইন (শ্রেয়া · DMC Aspirant)
         </button>
       </form>
     </div>

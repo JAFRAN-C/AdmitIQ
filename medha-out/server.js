@@ -759,6 +759,103 @@ app.post('/api/exams/submit', (req, res) => {
     });
     insertLog.finalize();
 
+    // ─── BUILD 5-BOX STRUCTURED STUDY NOTES FROM SESSION TELEMETRY ───
+    const compTable = [];
+    const dangerTraps = [];
+    const memoryTricks = [];
+    const unchartedPrimers = [];
+    const masteredConcepts = [];
+
+    classifiedItems.forEach(item => {
+      const p = item.patternType;
+      const qStem = item.questionText || item.text_bn || 'মেডিকেল জীববিজ্ঞান প্রশ্ন';
+      const topic = item.topic || item.topic_bn || item.chapterName || 'জীববিজ্ঞান';
+      const options = item.options || [];
+      const correctAns = (options && item.correctAnswerIndex !== undefined && options[item.correctAnswerIndex])
+        ? options[item.correctAnswerIndex]
+        : (item.correctAnswerText || 'সঠিক উত্তর');
+      const finalChoice = item.finalChoiceText || (item.finalAnswerIndex !== null && options && options[item.finalAnswerIndex]) || 'কোনো অপশন নয়';
+      const firstChoice = item.firstChoiceText || '';
+      const explanation = item.explanation || item.explanation_bn || `${correctAns} হলো সঠিক বৈজ্ঞানিক তথ্য।`;
+      const trap = item.trap || item.trap_hint_bn || '';
+
+      // Box 1: Option Hesitation Table (Pattern 3 & 4)
+      if (p === 3 || p === 4) {
+        compTable.push({
+          questionId: item.questionId,
+          topic,
+          stem: qStem,
+          option1: firstChoice || 'বিভ্রান্তিকর অপশন',
+          option2: finalChoice || correctAns,
+          correctOption: correctAns,
+          keyDiff: trap || `${correctAns} সঠিক উত্তর কারণ এটি সরাসরি ${topic}-এর সাথে জড়িত।`,
+          isResolved: p === 3,
+          status: p === 3 ? 'দ্বিধা সত্ত্বেও সঠিক ✅' : 'ফাঁদে বিভ্রান্তি ⚠️'
+        });
+      }
+
+      // Box 2: Fast Careless Mistakes & Traps (Pattern 5, 4, 2, 7 when wrong)
+      if (!item.isCorrect && (p === 5 || p === 4 || p === 2 || p === 7)) {
+        dangerTraps.push({
+          questionId: item.questionId,
+          topic,
+          stem: qStem,
+          choice: finalChoice,
+          correctChoice: correctAns,
+          trap: trap || explanation || 'বিভ্রান্তিকর অপশনের ফাঁদে পড়ে ভুল হয়েছে।',
+          isRepeat: false,
+          repeatCount: 1,
+          speedSec: item.timeTaken,
+          alertLevel: p === 5 ? 'FAST_MISTAKE' : 'CARELESS_ERROR'
+        });
+      }
+
+      // Box 3: Memory Mnemonics for Latency > 6s (Pattern 1 & 2)
+      if (p === 1 || p === 2) {
+        memoryTricks.push({
+          topic,
+          stem: qStem,
+          latencySec: item.timeTaken,
+          mnemonic: trap ? `💡 মনে রাখার সহজ ছন্দ: ${trap}` : `💡 মনে রাখার সহজ টেকনিক: "${topic}" মনে রাখতে "${correctAns}"-এর মূল কি-ওয়ার্ড মনে রাখুন।`,
+          speedTrigger: `⚡ ৫-সেকেন্ডে রিকল করার কৌশল: "${topic}" দেখলেই সরাসরি "${correctAns}" মনে করুন।`
+        });
+      }
+
+      // Box 4: Skipped Questions (Pattern 7 & 6)
+      if (p === 7 || (p === 6 && item.wasSkipped)) {
+        unchartedPrimers.push({
+          questionId: item.questionId,
+          topic,
+          stem: qStem,
+          primerText: `📖 এই প্রশ্নের জন্য আবশ্যকীয় তথ্য: "${qStem}"-এর সঠিক উত্তর হলো "${correctAns}"।`,
+          keyFacts: explanation
+        });
+      }
+
+      // Box 5: Mastered Concepts (Pattern 0)
+      if (p === 0 && item.isCorrect) {
+        masteredConcepts.push({
+          topic,
+          stem: qStem,
+          speedSec: item.timeTaken,
+          resolvedFrom: 'First-Attempt Instant Recall',
+          resolutionNote: `${item.timeTaken} সেকেন্ডে কোনো দ্বিধা ছাড়া শতভাগ নির্ভুল উত্তর!`
+        });
+      }
+    });
+
+    const sessionNotes = {
+      titleBn: 'এই পরীক্ষার স্মার্ট রিভিশন নোট',
+      version: 1,
+      examsCount: 1,
+      masteryPercent: accuracy,
+      comparisonTable: compTable,
+      dangerTraps: dangerTraps,
+      memoryTricks: memoryTricks,
+      unchartedPrimers: unchartedPrimers,
+      masteredConcepts: masteredConcepts
+    };
+
     // Determine target chapter for living note compilation
     const targetChapterId = chapterId || (classifiedItems[0] && (classifiedItems[0].chapterId || classifiedItems[0].chapter_id)) || null;
 
@@ -774,7 +871,8 @@ app.post('/api/exams/submit', (req, res) => {
             dominantPattern,
             patternCounts,
             classifiedItems,
-            chapterLivingNote: livingDoc
+            sessionNotes,
+            chapterLivingNote: livingDoc || sessionNotes
           });
         })
         .catch(cErr => {
@@ -787,7 +885,9 @@ app.post('/api/exams/submit', (req, res) => {
             avgTime,
             dominantPattern,
             patternCounts,
-            classifiedItems
+            classifiedItems,
+            sessionNotes,
+            chapterLivingNote: sessionNotes
           });
         });
     } else {
@@ -799,7 +899,9 @@ app.post('/api/exams/submit', (req, res) => {
         avgTime,
         dominantPattern,
         patternCounts,
-        classifiedItems
+        classifiedItems,
+        sessionNotes,
+        chapterLivingNote: sessionNotes
       });
     }
   });
